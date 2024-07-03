@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default `en` }}" class="scroll-smooth dark">
+
+<head>
+  {{- partial "head/index" . -}}
+</head>
+
+<body class="max-w-screen-md mx-auto" style="padding: 0px 15px 0 15px;">
+  
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6Q7K85J" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div class="header">
+    {{ partial "header/index" . }}
+    {{ partial "header/theme-button" . }}
+  </div>
+
+  <main id="content">
+    {{- block "main" . -}}
+    {{- end }}
+  </main>
+
+  {{- partial "footer/index" . -}}
+</body>
+
+</html>

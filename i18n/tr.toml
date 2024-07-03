@@ -1,0 +1,17 @@
+[latestPosts]
+    other = 'Son yazılar'
+    
+[readMore]
+    other = 'Devamını oku'
+
+[summary]
+    other = 'Özet'
+
+[estimatedReadingTime]
+    other = 'Tahmini okuma süresi: %d dakika'
+
+[404_title]
+    other = 'Sayfa bulunamadı'
+
+[404_text]
+    other = "Hatalı bir bağlantıyı takip ettiğiniz veya bu sitede bulunmayan bir URL girdiğiniz anlaşılıyor."
