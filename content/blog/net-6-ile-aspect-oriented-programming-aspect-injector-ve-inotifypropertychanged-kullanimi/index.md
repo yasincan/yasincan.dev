@@ -1,5 +1,5 @@
 ---
-title: "Sonarqube Kurulumu ve SonarScanner.MSBuild.exe"
+title: "Aspect-Oriented Programming, Aspect Injector ve INotifyPropertyChanged Kullanımı"
 draft: false
 date: 2023-09-14
 description: "Aspect Injector açık kaynak bir compile-time AOP framework içinde bir çok özellik bulunuyor. Bu yazıda Aspect Injector kullanarak bir sınıfın(class) içindeki property’ lere bir set işlemi olduğunda bir event"
