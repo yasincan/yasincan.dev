@@ -8,6 +8,9 @@ enableRobotsTXT = true
 summaryLength = 15
 paginate = 5
 
+[services]
+  [services.googleAnalytics]
+    id = "GTM-W6Q7K85J"
 
 [markup]
   [markup.highlight]
