@@ -3,7 +3,8 @@
 
 <head>
     <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
+    <script>
+    (function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
                 'gtm.start':
                     new Date().getTime(), event: 'gtm.js'
@@ -12,56 +13,46 @@
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-W6Q7K85J');</script>
     <!-- End Google Tag Manager -->
-
     <meta charset="utf-8">
     <title>Yasin Can - Software Developer</title>
-
     <!-- Meta Descriptions -->
-    <meta name="description"
-        content="Yasin Can, Software Developer - Profesyonel deneyimleri, iletişim bilgileri ve biyografisiyle Yasin Can'a ait profil sayfası.">
+    <meta name="description" content="Yasin Can'ın yazılım geliştirme projeleri, profesyonel deneyimleri ve iletişim bilgileri. Full Stack Developer olarak web ve mobil çözümler.">
     <meta name="author" content="Yasin Can">
     <meta name="keywords" content="Yasin Can, profil, biyografi, profesyonel deneyim, iletişim">
     <meta name="robots" content="index, follow">
-
     <!-- Open Graph meta tags for better social media integration -->
     <meta property="profile:first_name" content="Yasin">
     <meta property="profile:last_name" content="Can">
     <meta property="og:title" content="Yasin Can - Software Developer">
-    <meta property="og:description"
-        content="Profesyonel deneyimleri, iletişim bilgileri ve biyografisiyle Yasin Can'a ait profil sayfası.">
+    <meta property="og:description" content="Yasin Can'ın yazılım geliştirme projeleri, profesyonel deneyimleri ve iletişim bilgileri. Full Stack Developer olarak web ve mobil çözümler.">
     <meta property="og:image" content="https://yasincan.dev/images/profile.jpg">
     <meta property="og:url" content="https://yasincan.dev">
     <meta property="og:type" content="profile">
-
     <!-- Twitter meta tags for better social media integration -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@yasincancs">
     <meta name="twitter:title" content="Yasin Can - Software Developer">
-    <meta name="twitter:description"
-        content="Profesyonel deneyimleri, iletişim bilgileri ve biyografisiyle Yasin Can'a ait profil sayfası.">
+    <meta name="twitter:description" content="Yasin Can'ın yazılım geliştirme projeleri, profesyonel deneyimleri ve iletişim bilgileri. Full Stack Developer olarak web ve mobil çözümler.">
     <meta name="twitter:image" content="https://yasincan.dev/images/profile.jpg">
-
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-
     <link rel="canonical" href="https://yasincan.dev" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./lib/font-awesome/css/all.css" />
+    <link rel="stylesheet" href="./lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="./lib/owl-carousel/owl.carousel.min.css" />
     <link rel="stylesheet" href="./lib/magnific-popup.js/magnific-popup.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="apple-touch-icon" href="./favicon.ico">
 </head>
 
-<body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1">
+<body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1" aria-label="Main content">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6Q7K85J" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6Q7K85J" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
-
     <!-- Preloader -->
     <div class="preloader">
         <div class="lds-ellipsis">
@@ -72,7 +63,6 @@
         </div>
     </div>
     <!-- Preloader End -->
-
     <!-- Document Wrapper
     =============================== -->
     <div id="main-wrapper">
@@ -86,9 +76,12 @@
                     <!-- Logo -->
                     <a href="/" class="mb-lg-auto mt-lg-4">
                         <span class="bg-dark-2 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block">
-                            <img class="img-fluid rounded-pill d-block" src="./images/profile.jpg" width="200"
-                                height="200" title="Yasin Can" title="Yasin Can - Software Engineer"
-                                alt="Yasin Can - Software Engineer">
+                            <picture>
+                                <source srcset="./images/profile.webp" type="image/webp">
+                                <img class="img-fluid rounded-pill d-block" src="./images/profile.jpg" width="200"
+                                     height="200" title="Yasin Can" title="Yasin Can - Software Engineer"
+                                     alt="Yasin Can - Software Engineer">
+                            </picture>
                         </span>
                         <h1 class="text-5 text-white text-center mb-0 d-lg-block">Yasin Can</h1>
                     </a>
@@ -100,24 +93,37 @@
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#about">About Me</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#resume">Resume</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link smooth-scroll"
-                                    onclick="window.location.href = window.location.href + '/blog';"
-                                    href="#blog">Blog</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link smooth-scroll"
+                                   onclick="window.location.href = window.location.href + '/blog';"
+                                   href="#blog">Blog</a>
+                            </li>
                         </ul>
                     </div>
                     <ul class="social-icons social-icons-muted social-icons-sm mt-lg-auto ms-auto ms-lg-0 d-flex">
-                        <li class="social-icons-twitter"><a data-bs-toggle="tooltip" title="Twitter"
-                                href="https://twitter.com/yasincancs" target="_blank"><i
-                                    class="fab fa-twitter dev-social"></i></a></li>
-                        <li class="social-icons-linkedin"><a data-bs-toggle="tooltip" title="Linkedin"
-                                data-bs-placement="top" href="https://linkedin.com/in/yasincan" target="_blank"><i
-                                    class="fab fa-linkedin dev-social"></i></a></li>
-                        <li class="social-icons-github"><a data-bs-toggle="tooltip" title="GitHub"
-                                data-bs-placement="top" href="https://github.com/yasincan" target="_blank"><i
-                                    class="fab fa-github dev-social"></i></a></li>
+                        <li class="social-icons-twitter">
+                            <a data-bs-toggle="tooltip" title="Twitter"
+                               href="https://twitter.com/yasincancs" target="_blank">
+                                <i class="fab fa-twitter dev-social"></i>
+                            </a>
+                        </li>
+                        <li class="social-icons-linkedin">
+                            <a data-bs-toggle="tooltip" title="Linkedin"
+                               data-bs-placement="top" href="https://linkedin.com/in/yasincan" target="_blank">
+                                <i class="fab fa-linkedin dev-social"></i>
+                            </a>
+                        </li>
+                        <li class="social-icons-github">
+                            <a data-bs-toggle="tooltip" title="GitHub"
+                               data-bs-placement="top" href="https://github.com/yasincan" target="_blank">
+                                <i class="fab fa-github dev-social"></i>
+                            </a>
+                        </li>
                     </ul>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#header-nav"><span></span><span></span><span></span></button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#header-nav"
+                            aria-label="Menüyü Aç/Kapat">
+                        <span></span><span></span><span></span>
+                    </button>
                 </div>
             </nav>
             <!-- Navbar End -->
@@ -132,7 +138,7 @@
             <section id="home">
                 <div class="hero-wrap">
                     <div class="hero-mask opacity-8 bg-dark"></div>
-                    <div class="hero-bg parallax" style="background-image:url('./img/intro-bg.jpg');"></div>
+                    <div class="hero-bg parallax"></div>
                     <div class="hero-content section d-flex fullscreen">
                         <div class="container my-auto">
                             <div class="row">
@@ -144,17 +150,24 @@
                                         <p>I'm a Programer.</p>
                                     </div>
                                     <p class="text-7 fw-500 text-white mb-2 mb-md-3">Welcome</p>
-                                    <h2 class="text-16 fw-600 text-white mb-2 mb-md-3 dev-title"><span
-                                            class="typed"></span></h2>
+                                    <h2 class="text-16 fw-600 text-white mb-2 mb-md-3 dev-title">
+                                        <span class="typed"></span>
+                                    </h2>
                                     <p class="text-5 text-light mb-4">Türkiye, Istanbul</p>
                                     <a href="#contact"
-                                        class="btn btn-outline-primary rounded-pill shadow-none smooth-scroll mt-2">Contact
-                                        Me</a>
+                                       class="btn btn-outline-primary rounded-pill shadow-none smooth-scroll mt-2">
+                                        Contact
+                                        Me
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <a href="#about" class="scroll-down-arrow text-white smooth-scroll"><span class="animated"><i
-                                    class="fa fa-chevron-down"></i></span></a>
+                        <a href="#about" class="scroll-down-arrow text-white smooth-scroll"
+                           aria-label="Scroll down to About section">
+                            <span class="animated">
+                                <i class="fa fa-chevron-down"></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -167,16 +180,17 @@
                     <div class="position-relative d-flex text-center mb-5">
                         <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">About Me</h2>
                         <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">
-                            Know Me More<span
-                                class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
+                            Know Me More<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
                         </p>
                     </div>
                     <!-- Heading end-->
 
                     <div class="row gy-5">
                         <div class="col-lg-7 col-xl-8 text-center text-lg-start">
-                            <h2 class="text-7 fw-600 mb-3">Ben <span class="text-primary">Yasin Can,</span>Yazılım
-                                Geliştiricisiyim</h2>
+                            <h2 class="text-7 fw-600 mb-3">
+                                Ben <span class="text-primary">Yasin Can,</span>Yazılım
+                                Geliştiricisiyim
+                            </h2>
                             <p>
                                 Profesyonel olarak bu işi yapıyorum bu zamana kadar bireysel ve kurumsal birçok
                                 projede bulundum .NET Framework ve .Net Core gibi Microsoft teknolojilerini
@@ -184,20 +198,25 @@
                                 firmalarda Back-End takımlarında görev almama rağmen Full Stack yetenekler de
                                 edindim
                             </p>
-                            <p>Gördüğüm her yeni teknolojide ufak projeler geliştirmeyi seviyorum yazılım sektöründe
+                            <p>
+                                Gördüğüm her yeni teknolojide ufak projeler geliştirmeyi seviyorum yazılım sektöründe
                                 öncü firmaları, kişileri ve kullandıkları teknolojileri önemsiyorum ve elimden
                                 geldiğince takip etmeye çalışıyorum All Stack Developer olma yolunda tüm dostlarım
-                                gibi ilerliyorum 😊</p>
+                                gibi ilerliyorum 😊
+                            </p>
                         </div>
                         <div class="col-lg-5 col-xl-4">
                             <div class="ps-lg-4">
                                 <ul class="list-style-2">
                                     <li class=""><span class="fw-600 me-2">Name:</span>Yasin Can</li>
-                                    <li class=""><span class="fw-600 me-2">Email:</span><a
-                                            href="mailto:hello@yasincan.dev">hello@yasincan.dev</a></li>
-                                    <li class=""><span class="fw-600 me-2">Age:</span><span id="yc-birthYear"></span>
+                                    <li class="">
+                                        <span class="fw-600 me-2">Email:</span><a href="mailto:hello@yasincan.dev">hello@yasincan.dev</a>
                                     </li>
-                                    <li class="border-0"><span class="fw-600 me-2">From:</span>Istanbul, Türkiye
+                                    <li class="">
+                                        <span class="fw-600 me-2">Age:</span><span id="yc-birthYear"></span>
+                                    </li>
+                                    <li class="border-0">
+                                        <span class="fw-600 me-2">From:</span>Istanbul, Türkiye
                                     </li>
                                 </ul>
                                 <a href="#" class="btn btn-primary rounded-pill">Download CV</a>
@@ -208,8 +227,11 @@
                         <div class="row">
                             <div class="col-6 col-md-3">
                                 <div class="featured-box text-center">
-                                    <h4 class="text-muted mb-0 text-12"><span class="counter" data-from="0"><span
-                                                id="yc-yearsExperiance"></span></span>+</h4>
+                                    <h3 class="text-muted mb-0 text-12">
+                                        <span class="counter" data-from="0">
+                                            <span id="yc-yearsExperiance"></span>+
+                                        </span>
+                                    </h3>
                                     <p class="mb-0">Years Experiance</p>
                                 </div>
                             </div>
@@ -226,8 +248,7 @@
                     <div class="position-relative d-flex text-center mb-5">
                         <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Summary</h2>
                         <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">
-                            Resume<span
-                                class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
+                            Resume<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
                         </p>
                     </div>
                     <!-- Heading end-->
@@ -240,26 +261,32 @@
                                 <p class="badge bg-primary text-2 fw-400">2021 - 2024</p>
                                 <h3 class="text-5">Yönetim Bilişim Sistemleri</h3>
                                 <p class="text-danger">Anadolu Üniversitesi</p>
-                                <p class="mb-0">Yönetim Bilişim Sistemleri alanında lisans eğitimimi başarı ile
-                                    tamamladım.</p>
+                                <p class="mb-0">
+                                    Yönetim Bilişim Sistemleri alanında lisans eğitimimi başarı ile
+                                    tamamladım.
+                                </p>
                             </div>
                             <div class="bg-white border rounded p-4 mb-4">
                                 <p class="badge bg-primary text-2 fw-400">2017 - 2019</p>
                                 <h3 class="text-5">Bilgisayar Programcılığı</h3>
                                 <p class="text-danger">Sakarya Üniversitesi</p>
-                                <p class="mb-0">Bölümü seçmeden önce dersleri uzun süre araştırdım Java ve Mobil
+                                <p class="mb-0">
+                                    Bölümü seçmeden önce dersleri uzun süre araştırdım Java ve Mobil
                                     Application derslerinin olması bu bölümü seçmemde etkisi olmuştu Lise yıllarında
                                     öğrendiğim bilgileri pekiştirip üzerine üniversite de yenilerini ekleyerek devam
-                                    ettim.</p>
+                                    ettim.
+                                </p>
                             </div>
                             <div class="bg-white border rounded p-4 mb-4">
                                 <p class="badge bg-primary text-2 fw-400">2012 - 2016</p>
                                 <h3 class="text-5">Web Tasarım ve Programlama</h3>
                                 <p class="text-danger">Ümraniye Atatürk Mesleki ve Teknik Anadolu Lisesi</p>
-                                <p class="mb-0">Yazılım sektörüne attığım ilk adım lise yıllarında web tasarım ve
+                                <p class="mb-0">
+                                    Yazılım sektörüne attığım ilk adım lise yıllarında web tasarım ve
                                     programlama bölümünü seçmem ile başladı ders modüllerden öğrenip HTML bir sayfa
                                     CSS ile background-color: green; dediğimde sayfanın yeşil olduğu anı 😊 halen
-                                    hatırlıyorum.</p>
+                                    hatırlıyorum.
+                                </p>
                             </div>
                         </div>
 
@@ -270,19 +297,23 @@
                                 <p class="badge bg-primary text-2 fw-400">2022 - <span id="yc-year"></span></p>
                                 <h3 class="text-5">Software Engineer</h3>
                                 <p class="text-danger">Lidio & Mobilexpress</p>
-                                <p class="mb-0">Mobilexpress & Lidio firmasında
-                                    çalışıyorum elektronik ödemeler üzerine kendimi geliştiriyorum.</p>
+                                <p class="mb-0">
+                                    Mobilexpress & Lidio firmasında
+                                    çalışıyorum elektronik ödemeler üzerine kendimi geliştiriyorum.
+                                </p>
                             </div>
                             <div class="bg-white border rounded p-4 mb-4">
                                 <p class="badge bg-primary text-2 fw-400">2019 - 2022</p>
                                 <h3 class="text-5">Back-END Developer</h3>
                                 <p class="text-danger">Pixelplus</p>
-                                <p class="mb-0">2019 yılında profesyonel olarak sektöre Pixelplus firmasında
+                                <p class="mb-0">
+                                    2019 yılında profesyonel olarak sektöre Pixelplus firmasında
                                     Back-End Developer olarak başladım Pixelplus dijital bir ajanstı bir çok
                                     kurumsal markanın web sitelerini, uygulamalarının .Net ve .Net Core
                                     teknolojileri kullanarak geliştirdim ve güzel tecrübeler edindim Pixelplus da
                                     baştan sonra kadar içinde bulunduğum ve benim başlayıp bitirdiğim projeler oldu
-                                    3 yıl kadar bu firmada çalıştım.</p>
+                                    3 yıl kadar bu firmada çalıştım.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -290,53 +321,68 @@
                     <h2 class="text-6 fw-600 mt-4 mb-4">My Skills</h2>
                     <div class="row gx-5">
                         <div class="col-md-6">
-                            <p class="text-dark fw-500 text-start mb-2">Web Design <span class="float-end">99%</span>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                Web Design <span class="float-end">99%</span>
                             </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="Web Design"
+                                     aria-valuenow="99" aria-label="">
                                 </div>
                             </div>
-                            <p class="text-dark fw-500 text-start mb-2">HTML/CSS <span class="float-end">99%</span>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                HTML/CSS <span class="float-end">99%</span>
                             </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="HTML/CSS"
+                                     aria-valuenow="99">
                                 </div>
                             </div>
-                            <p class="text-dark fw-500 text-start mb-2">JavaScript <span class="float-end">99%</span>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                JavaScript <span class="float-end">99%</span>
                             </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="JavaScript"
+                                     aria-valuenow="99">
                                 </div>
                             </div>
-                            <p class="text-dark fw-500 text-start mb-2">Docker <span class="float-end">99%</span>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                Docker <span class="float-end">99%</span>
                             </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="Docker"
+                                     aria-valuenow="99">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <p class="text-dark fw-500 text-start mb-2">C# <span class="float-end">99%</span></p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="C#"
+                                     aria-valuenow="99">
                                 </div>
                             </div>
-                            <p class="text-dark fw-500 text-start mb-2">.Net & .Net Core <span
-                                    class="float-end">99%</span></p>
-                            <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
-                                </div>
-                            </div>
-                            <p class="text-dark fw-500 text-start mb-2">Web API Core <span class="float-end">99%</span>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                .Net & .Net Core <span class="float-end">99%</span>
                             </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%"
+                                     aria-label=".Net & .Net Core" aria-valuenow="99">
                                 </div>
                             </div>
-                            <p class="text-dark fw-500 text-start mb-2">Asp.NET Core MVC<span
-                                    class="float-end">99%</span></p>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                Web API Core <span class="float-end">99%</span>
+                            </p>
                             <div class="progress progress-sm mb-4">
-                                <div class="progress-bar" role="progressbar" style="width: 99%" aria-valuenow="99">
+                                <div class="progress-bar" role="progressbar" style="width: 99%"
+                                     aria-label="Web API Core" aria-valuenow="99">
+                                </div>
+                            </div>
+                            <p class="text-dark fw-500 text-start mb-2">
+                                Asp.NET Core MVC<span class="float-end">99%</span>
+                            </p>
+                            <div class="progress progress-sm mb-4">
+                                <div class="progress-bar" role="progressbar" style="width: 99%"
+                                     aria-label="Asp.NET Core MVC" aria-valuenow="99">
                                 </div>
                             </div>
                         </div>
@@ -352,8 +398,7 @@
                     <div class="position-relative d-flex text-center mb-5">
                         <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Contact</h2>
                         <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">
-                            Get in Touch<span
-                                class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
+                            Get in Touch<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span>
                         </p>
                     </div>
                     <!-- Heading end-->
@@ -365,19 +410,31 @@
                                 <br>
                             </p>
                             <!-- <p class="text-3 mb-1"><span class="text-primary text-4 me-2"><i class="fas fa-phone"></i></span>(+90) 5</p> -->
-                            <p class="text-3 mb-4"><span class="text-primary text-4 me-2"><i
-                                        class="fas fa-envelope"></i></span>hello@yasincan.dev</p>
+                            <p class="text-3 mb-4">
+                                <span class="text-primary text-4 me-2">
+                                    <i class="fas fa-envelope"></i>
+                                </span>hello@yasincan.dev
+                            </p>
                             <h2 class="mb-3 text-5 text-uppercase">Follow Me</h2>
                             <ul class="social-icons justify-content-center justify-content-md-start">
-                                <li class="social-icons-twitter"><a data-bs-toggle="tooltip"
-                                        href="https://twitter.com/yasincancs/" target="_blank" title="Twitter"><i
-                                            class="fab fa-twitter"></i></a></li>
-                                <li class="social-icons-linkedin"><a data-bs-toggle="tooltip"
-                                        href="https://linkedin.com/in/yasincan" target="_blank" title="Linkedin"><i
-                                            class="fab fa-linkedin"></i></a></li>
-                                <li class="social-icons-github"><a data-bs-toggle="tooltip"
-                                        href="https://github.com/yasincan" target="_blank" title="GitHub"><i
-                                            class="fab fa-github"></i></a></li>
+                                <li class="social-icons-twitter">
+                                    <a data-bs-toggle="tooltip"
+                                       href="https://twitter.com/yasincancs/" target="_blank" title="Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li class="social-icons-linkedin">
+                                    <a data-bs-toggle="tooltip"
+                                       href="https://linkedin.com/in/yasincan" target="_blank" title="Linkedin">
+                                        <i class="fab fa-linkedin"></i>
+                                    </a>
+                                </li>
+                                <li class="social-icons-github">
+                                    <a data-bs-toggle="tooltip"
+                                       href="https://github.com/yasincan" target="_blank" title="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-8 col-xl-9 order-0 order-md-1">
@@ -392,18 +449,20 @@
                                     </div>
                                     <div class="col-xl-6">
                                         <input class="form-control" name="Email" type="email" required
-                                            placeholder="Email" />
+                                               placeholder="Email" />
                                         <span class="text-danger"></span>
                                     </div>
                                     <div class="col">
                                         <textarea class="form-control" name="Message" rows="5" required
-                                            placeholder="What is your note to me........" maxlength="1000"></textarea>
+                                                  placeholder="What is your note to me........" maxlength="1000"></textarea>
                                         <span class="text-danger"></span>
                                     </div>
                                 </div>
                                 <p class="text-center mt-4 mb-0">
                                     <button id="submit-btn" class="btn btn-primary rounded-pill d-inline-flex"
-                                        type="submit">Send Message</button>
+                                            type="submit">
+                                        Send Message
+                                    </button>
                                 </p>
                             </form>
                         </div>
@@ -420,8 +479,10 @@
             <div class="container px-lg-5">
                 <div class="row">
                     <div class="col-lg-6 text-center text-lg-start">
-                        <p class="mb-3 mb-lg-0">Copyright © <span id="yc-year"></span> <a href="#"
-                                class="fw-500">Yasin</a>. All Rights Reserved.</p>
+                        <p class="mb-3 mb-lg-0">
+                            Copyright © <span id="yc-year"></span> <a href="#"
+                                                                      class="fw-500">Yasin</a>. All Rights Reserved.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -432,8 +493,9 @@
     <!-- Document Wrapper end -->
     <!-- Back to Top
     ============================================= -->
-    <a id="back-to-top" class="rounded-circle" data-bs-toggle="tooltip" href="#" data-bs-original-title="Back to Top"><i
-            class="fa fa-chevron-up"></i></a>
+    <a id="back-to-top" class="rounded-circle" data-bs-toggle="tooltip" href="#" data-bs-original-title="Back to Top">
+        <i class="fa fa-chevron-up"></i>
+    </a>
 
     <script src="./lib/jquery/dist/jquery.min.js"></script>
     <script src="./lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -448,8 +510,7 @@
     <script src="./lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
     <script src="./lib/switchery/switchery.min.js"></script>
     <script src="./js/theme.js"></script>
-    <script id="google-recaptcha-v3"
-        src="https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM" defer></script>
+    <script id="google-recaptcha-v3" src="https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM" async defer></script>
     <script src="./lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="./lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>

@@ -1,3 +1,17 @@
+.hero-bg {
+    background-image: url('../img/intro-bg.jpg');
+}
+@supports (background-image: url('../img/intro-bg.webp')) {
+    .hero-bg {
+        background-image: url('../img/intro-bg.webp');
+    }
+}
+
+.high-contrast {
+    color: #000;
+    background-color: #fff;
+}
+
 .dev-title {
     font-family: Courier New;
 }
@@ -20,8 +34,8 @@ body, html {
 }
 
 body {
-    background: #dddddd;
-    color: #4c4d4d;
+    color: #000;
+    background-color: #fff;
     font-family: "Poppins", sans-serif;
 }
 
