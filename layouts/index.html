@@ -4,7 +4,7 @@
 <head>
     <!-- Google Tag Manager -->
     <script>
-    (function (w, d, s, l, i) {
+        (function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({
                 'gtm.start':
                     new Date().getTime(), event: 'gtm.js'
@@ -37,14 +37,15 @@
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://yasincanapi.azurewebsites.net;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://www.google.com/recaptcha/api.js https://www.gstatic.com; connect-src 'self' https://yasincanapi.azurewebsites.net;">
     <link rel="canonical" href="https://yasincan.dev" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="./lib/owl-carousel/owl.carousel.min.css" />
     <link rel="stylesheet" href="./lib/magnific-popup.js/magnific-popup.min.css" />
-    <link rel="stylesheet" href="./css/site.css" />
+    {{ $styles := resources.Get "css/site.css" | resources.Minify }}
+    <link rel="stylesheet" href="{{ $styles.Permalink }}" media="screen" />
     <link rel="apple-touch-icon" href="./favicon.ico">
 </head>
 
@@ -95,9 +96,7 @@
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#resume">Resume</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
                             <li class="nav-item">
-                                <a class="nav-link smooth-scroll"
-                                   onclick="window.location.href = window.location.href + '/blog';"
-                                   href="#blog">Blog</a>
+                                <a class="nav-link smooth-scroll" href="#blog">Blog</a>
                             </li>
                         </ul>
                     </div>
@@ -510,7 +509,8 @@
     <script src="./lib/isotope/isotope.pkgd.min.js"></script>
     <script src="./lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
     <script src="./lib/switchery/switchery.min.js"></script>
-    <script src="./js/theme.js"></script>
+    {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
+    <script src="{{ $theme.Permalink }}"></script>
     <script id="google-recaptcha-v3" src="https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM" async defer></script>
     <script src="./lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="./lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

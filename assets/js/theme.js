@@ -39,17 +39,26 @@
         $('.smooth-scroll').on('click', function () {
             event.preventDefault();
             var sectionTo = $(this).attr('href');
-            $('html, body').stop().animate({
-                scrollTop: $(sectionTo).offset().top
-            }, 1500, 'easeInOutExpo');
+            if (sectionTo === '#blog') {
+                window.location.href = '/blog';
+            } else {
+                $('html, body').stop().animate({
+                    scrollTop: $(sectionTo).offset().top
+                }, 1500, 'easeInOutExpo');
+            }
         });
     } else {
         $('.smooth-scroll').on('click', function () {
             event.preventDefault();
             var sectionTo = $(this).attr('href');
-            $('html, body').stop().animate({
-                scrollTop: $(sectionTo).offset().top - 50
-            }, 1500, 'easeInOutExpo');
+            if (sectionTo === '#blog') {
+                window.location.href = '/blog';
+            }
+            else {
+                $('html, body').stop().animate({
+                    scrollTop: $(sectionTo).offset().top - 50
+                }, 1500, 'easeInOutExpo');
+            }
         });
     }
 
@@ -298,7 +307,7 @@
             $("#yc-yearsExperiance").html(result.yearsExperiance);
         }
     });
-    
+
     /*------------------------
        Contact Form
     -------------------------- */
@@ -314,7 +323,7 @@
             grecaptcha.execute(site_key, { action: 'contact' }).then(function (token) {
                 var formData = form.serializeArray();
                 var postData = {};
-                formData.forEach(function(item) {
+                formData.forEach(function (item) {
                     postData[item.name] = item.value;
                 });
                 postData['g-recaptcha-response'] = token;
