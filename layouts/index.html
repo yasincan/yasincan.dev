@@ -37,7 +37,7 @@
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://www.google.com/recaptcha/api.js https://www.gstatic.com; connect-src 'self' https://yasincanapi.azurewebsites.net;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://fonts.googleapis.com https://www.gstatic.com https://fonts.gstatic.com https://www.googletagmanager.com http://www.google-analytics.com;">
     <link rel="canonical" href="https://yasincan.dev" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -55,16 +55,18 @@
         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6Q7K85J" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+
     <!-- Preloader -->
-    <div class="preloader">
+    <!--<div class="preloader">
         <div class="lds-ellipsis">
             <div></div>
             <div></div>
             <div></div>
             <div></div>
         </div>
-    </div>
+    </div>-->
     <!-- Preloader End -->
+
     <!-- Document Wrapper
     =============================== -->
     <div id="main-wrapper">
@@ -81,8 +83,7 @@
                             <picture>
                                 <source srcset="./images/profile.webp" type="image/webp">
                                 <img class="img-fluid rounded-pill d-block" src="./images/profile.jpg" width="200"
-                                     height="200" title="Yasin Can" title="Yasin Can - Software Engineer"
-                                     alt="Yasin Can - Software Engineer">
+                                     height="200" title="Yasin Can" alt="Yasin Can - Software Engineer">
                             </picture>
                         </span>
                         <h1 class="text-5 text-white text-center mb-0 d-lg-block">Yasin Can</h1>
@@ -326,7 +327,7 @@
                             </p>
                             <div class="progress progress-sm mb-4">
                                 <div class="progress-bar" role="progressbar" style="width: 99%" aria-label="Web Design"
-                                     aria-valuenow="99" aria-label="">
+                                     aria-valuenow="99">
                                 </div>
                             </div>
                             <p class="text-dark fw-500 text-start mb-2">
@@ -480,8 +481,7 @@
                 <div class="row">
                     <div class="col-lg-6 text-center text-lg-start">
                         <p class="mb-3 mb-lg-0">
-                            Copyright © <span id="yc-year"></span> <a href="#"
-                                                                      class="fw-500">Yasin</a>. All Rights Reserved.
+                            Copyright © <span id="yc-year"></span> <a href="#" class="fw-500">Yasin</a>. All Rights Reserved.
                         </p>
                     </div>
                 </div>
