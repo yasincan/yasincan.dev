@@ -301,7 +301,7 @@
     });
 
     $.ajax({
-        url: "https://yasincanapi.azurewebsites.net/Network/Age", success: function (result) {
+        url: "https://ap.yasincan.dev/Network/Age", success: function (result) {
             $("#yc-year").html(result.year);
             $("#yc-birthYear").html(result.birthYear);
             $("#yc-yearsExperiance").html(result.yearsExperiance);
@@ -328,7 +328,7 @@
                 });
                 postData['g-recaptcha-response'] = token;
                 $.ajax({
-                    url: 'https://yasincanapi.azurewebsites.net/Network/Contact',
+                    url: 'https://ap.yasincan.dev/Network/Contact',
                     type: 'POST',
                     //dataType: 'json',
                     data: JSON.stringify(postData),
