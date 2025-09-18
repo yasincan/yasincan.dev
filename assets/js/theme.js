@@ -304,7 +304,7 @@
         url: "https://ap.yasincan.dev/Network/Age", success: function (result) {
             $("#yc-year").html(result.year);
             $("#yc-birthYear").html(result.birthYear);
-            $("#yc-yearsExperiance").html(result.yearsExperiance);
+            $("#yc-yearsExperience").html(result.yearsExperience);
         }
     });
 
