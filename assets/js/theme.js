@@ -301,12 +301,16 @@
     });
 
     $.ajax({
-        url: "https://ap.yasincan.dev/Network/Age", success: function (result) {
-            $("#yc-year").html(result.year);
-            $("#yc-birthYear").html(result.birthYear);
-            $("#yc-yearsExperience").html(result.yearsExperience);
-        }
-    });
+    url: "https://ap.yasincan.dev/Network/Age",
+    headers: {
+        'X-Page-Referrer': document.referrer || ''
+    },
+    success: function (result) {
+        $("#yc-year").html(result.year);
+        $("#yc-birthYear").html(result.birthYear);
+        $("#yc-yearsExperience").html(result.yearsExperience);
+    }
+});
 
     /*------------------------
        Contact Form
