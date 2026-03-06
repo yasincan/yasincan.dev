@@ -516,7 +516,7 @@
     <script src="./lib/isotope/isotope.pkgd.min.js"></script>
     <script src="./lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
     <script src="./lib/switchery/switchery.min.js"></script>
-    {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
+    {{ $theme := resources.Get "js/theme.js?v=2" | resources.Minify }}
     <script src="{{ $theme.Permalink }}"></script>
     <script id="google-recaptcha-v3" src="https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM" async defer></script>
     <script src="./lib/jquery-validation/dist/jquery.validate.min.js"></script>
