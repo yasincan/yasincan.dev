@@ -1,4 +1,4 @@
-.hero-bg {
+﻿.hero-bg {
     background-image: url('../img/intro-bg.jpg');
 }
 @supports (background-image: url('../img/intro-bg.webp')) {
@@ -22,6 +22,8 @@
 
 .dev-social-icon {
     color: rgba(250, 250, 250, 0.9);
+    width: 1em;
+    height: 1em;
     transition: color 0.2s ease;
 }
 
