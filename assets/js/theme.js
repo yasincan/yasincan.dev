@@ -1,30 +1,42 @@
 (function ($) {
     "use strict";
 
+    // Throttle helper
+    var scrollTicking = false;
 
-
-
-    // Header Sticky
+    // Header Sticky + Back to top (throttled)
     $(window).on('scroll', function () {
-        var stickytop = $('#header.sticky-top .bg-transparent');
-        var stickytopslide = $('#header.sticky-top-slide');
+        if (!scrollTicking) {
+            window.requestAnimationFrame(function () {
+                var scrollTop = $(window).scrollTop();
+                var stickytop = $('#header.sticky-top .bg-transparent');
+                var stickytopslide = $('#header.sticky-top-slide');
 
-        if ($(this).scrollTop() > 1) {
-            stickytop.addClass("sticky-on-top");
-            stickytop.find(".logo img").attr('src', stickytop.find('.logo img').data('sticky-logo'));
-        }
-        else {
-            stickytop.removeClass("sticky-on-top");
-            stickytop.find(".logo img").attr('src', stickytop.find('.logo img').data('default-logo'));
-        }
+                if (scrollTop > 1) {
+                    stickytop.addClass("sticky-on-top");
+                    stickytop.find(".logo img").attr('src', stickytop.find('.logo img').data('sticky-logo'));
+                } else {
+                    stickytop.removeClass("sticky-on-top");
+                    stickytop.find(".logo img").attr('src', stickytop.find('.logo img').data('default-logo'));
+                }
 
-        if ($(this).scrollTop() > 180) {
-            stickytopslide.find(".primary-menu").addClass("sticky-on");
-            stickytopslide.find(".logo img").attr('src', stickytopslide.find('.logo img').data('sticky-logo'));
-        }
-        else {
-            stickytopslide.find(".primary-menu").removeClass("sticky-on");
-            stickytopslide.find(".logo img").attr('src', stickytopslide.find('.logo img').data('default-logo'));
+                if (scrollTop > 180) {
+                    stickytopslide.find(".primary-menu").addClass("sticky-on");
+                    stickytopslide.find(".logo img").attr('src', stickytopslide.find('.logo img').data('sticky-logo'));
+                } else {
+                    stickytopslide.find(".primary-menu").removeClass("sticky-on");
+                    stickytopslide.find(".logo img").attr('src', stickytopslide.find('.logo img').data('default-logo'));
+                }
+
+                if (scrollTop > 400) {
+                    $('#back-to-top').fadeIn();
+                } else {
+                    $('#back-to-top').fadeOut();
+                }
+
+                scrollTicking = false;
+            });
+            scrollTicking = true;
         }
     });
 
@@ -105,15 +117,6 @@
     /*------------------------
        Scroll to top
     -------------------------- */
-    $(function () {
-        $(window).on('scroll', function () {
-            if ($(this).scrollTop() > 400) {
-                $('#back-to-top').fadeIn();
-            } else {
-                $('#back-to-top').fadeOut();
-            }
-        });
-    });
     $('#back-to-top').on("click", function () {
         $('html, body').animate({ scrollTop: 0 }, 'slow');
         return false;

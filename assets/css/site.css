@@ -20,6 +20,11 @@
     color: rgba(250, 250, 250, 0.9) !important;
 }
 
+.dev-social-icon {
+    color: rgba(250, 250, 250, 0.9);
+    transition: color 0.2s ease;
+}
+
 @media (max-width: 991.98px) {
     .bg-dark-2.rounded-pill {
         padding: 1px !important;
