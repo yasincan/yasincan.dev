@@ -1,12 +1,7 @@
 (function ($) {
     "use strict";
 
-    // Preloader
-    $(window).on('load', function () {
-        $('.lds-ellipsis').fadeOut();
-        $('.preloader').delay(333).fadeOut('slow');
-        $('body').delay(333);
-    });
+
 
 
     // Header Sticky
@@ -44,7 +39,7 @@
             } else {
                 $('html, body').stop().animate({
                     scrollTop: $(sectionTo).offset().top
-                }, 1500, 'easeInOutExpo');
+                }, 800, 'swing');
             }
         });
     } else {
@@ -57,7 +52,7 @@
             else {
                 $('html, body').stop().animate({
                     scrollTop: $(sectionTo).offset().top - 50
-                }, 1500, 'easeInOutExpo');
+                }, 800, 'swing');
             }
         });
     }
@@ -79,176 +74,7 @@
             $($(this).data('target')).toggleClass('show');
         })
 
-    /*---------------------------------
-       Carousel (Owl Carousel)
-    ----------------------------------- */
-    $(".owl-carousel").each(function (index) {
-        var a = $(this);
-        if ($("html").attr("dir") == 'rtl') {
-            var rtlVal = true
-        } else {
-            var rtlVal = false
-        }
-        $(this).owlCarousel({
-            rtl: rtlVal,
-            autoplay: a.data('autoplay'),
-            center: a.data('center'),
-            autoplayTimeout: a.data('autoplaytimeout'),
-            autoplayHoverPause: a.data('autoplayhoverpause'),
-            loop: a.data('loop'),
-            speed: a.data('speed'),
-            nav: a.data('nav'),
-            dots: a.data('dots'),
-            autoHeight: a.data('autoheight'),
-            autoWidth: a.data('autowidth'),
-            margin: a.data('margin'),
-            stagePadding: a.data('stagepadding'),
-            slideBy: a.data('slideby'),
-            lazyLoad: a.data('lazyload'),
-            navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-            animateOut: a.data('animateout'),
-            animateIn: a.data('animatein'),
-            video: a.data('video'),
-            items: a.data('items'),
-            responsive: {
-                0: { items: a.data('items-xs'), },
-                576: { items: a.data('items-sm'), },
-                768: { items: a.data('items-md'), },
-                992: { items: a.data('items-lg'), }
-            }
-        });
-    });
 
-    /*------------------------------------
-        Magnific Popup
-    -------------------------------------- */
-    // Image on Modal
-    $('.popup-img-gallery').each(function () {
-        $(this).magnificPopup({
-            delegate: '.popup-img:visible',
-            type: "image",
-            tLoading: '<div class="preloader"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>',
-            closeOnContentClick: !0,
-            mainClass: "mfp-fade",
-            gallery: {
-                enabled: true,
-                navigateByImgClick: true,
-                preload: [0, 1]
-            },
-        });
-    });
-
-    // Ajax On Modal 
-    $('.popup-ajax-gallery').each(function () {
-        $(this).magnificPopup({
-            delegate: '.popup-ajax:visible',
-            type: "ajax",
-            tLoading: '<div class="preloader"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>',
-            mainClass: "mfp-fade",
-            closeBtnInside: true,
-            midClick: true,
-            gallery: {
-                enabled: true,
-            },
-            callbacks: {
-                ajaxContentAdded: function () {
-                    $(".owl-carousel").each(function (index) {
-                        var a = $(this);
-                        if ($("html").attr("dir") == 'rtl') {
-                            var rtlVal = true
-                        } else {
-                            var rtlVal = false
-                        }
-                        $(this).owlCarousel({
-                            rtl: rtlVal,
-                            autoplay: a.data('autoplay'),
-                            center: a.data('center'),
-                            autoplayTimeout: a.data('autoplaytimeout'),
-                            autoplayHoverPause: a.data('autoplayhoverpause'),
-                            loop: a.data('loop'),
-                            speed: a.data('speed'),
-                            nav: a.data('nav'),
-                            dots: a.data('dots'),
-                            autoHeight: a.data('autoheight'),
-                            autoWidth: a.data('autowidth'),
-                            margin: a.data('margin'),
-                            stagePadding: a.data('stagepadding'),
-                            slideBy: a.data('slideby'),
-                            lazyLoad: a.data('lazyload'),
-                            navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-                            animateOut: a.data('animateOut'),
-                            animateIn: a.data('animateIn'),
-                            video: a.data('video'),
-                            items: a.data('items'),
-                            responsive: {
-                                0: { items: a.data('items-xs'), },
-                                576: { items: a.data('items-sm'), },
-                                768: { items: a.data('items-md'), },
-                                992: { items: a.data('items-lg'), }
-                            }
-                        });
-                    });
-                }
-            }
-        });
-    });
-
-    // YouTube/Viemo Video & Gmaps
-    $('.popup-youtube, .popup-vimeo, .popup-gmaps').each(function () {
-        $(this).magnificPopup({
-            type: 'iframe',
-            mainClass: 'mfp-fade',
-        });
-    });
-
-
-    /*------------------------------------
-        Isotope Portfolio Filter
-    -------------------------------------- */
-
-    $(window).on('load', function () {
-        $(".portfolio-filter").each(function () {
-            var e = $(this);
-            e.imagesLoaded(function () {
-                if ($("html").attr("dir") == 'rtl') {
-                    var rtlVal = false
-                } else {
-                    var rtlVal = true;
-                }
-                var $grid = e.isotope({
-                    layoutMode: "masonry",
-                    originLeft: rtlVal
-                });
-                $(".portfolio-menu").find("a").on("click", function () {
-                    var filterValue = $(this).attr("data-filter");
-                    return $(".portfolio-menu").find("a").removeClass("active"), $(this).addClass("active"),
-                        $grid.isotope({
-                            filter: filterValue
-                        }), !1
-                });
-            });
-        });
-    });
-
-    /*------------------------------------
-        Parallax Background
-    -------------------------------------- */
-    $(".parallax").each(function () {
-        $(this).parallaxie({
-            speed: 0.5,
-        });
-    });
-
-    /*------------------------------------
-        Counter
-    -------------------------------------- */
-    $(".counter").each(function () {
-        $(this).appear(function () {
-            $(this).countTo({
-                speed: 1800,
-            });
-        });
-    });
 
     /*------------------------------------
         Typed
@@ -265,13 +91,6 @@
     });
 
 
-    /*------------------------------------
-        YTPlayer YouTube Background
-    -------------------------------------- */
-
-    $(".player").each(function () {
-        $(this).mb_YTPlayer();
-    });
 
 
     /*------------------------
@@ -309,6 +128,12 @@
         $("#yc-year").html(result.year);
         $("#yc-birthYear").html(result.birthYear);
         $("#yc-yearsExperience").html(result.yearsExperience);
+    },
+    error: function () {
+        var fallbackYear = new Date().getFullYear();
+        $("#yc-year").html(fallbackYear);
+        $("#yc-birthYear").html("");
+        $("#yc-yearsExperience").html("7");
     }
 });
 

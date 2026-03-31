@@ -48,14 +48,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' *.cloudflareinsights.com *.gstatic.com *.googleapis.com *.google.com *.googletagmanager.com *.google-analytics.com; connect-src 'self' ap.yasincan.dev *.google-analytics.com stats.g.doubleclick.net;" />
     <link rel="canonical" href="https://yasincan.dev" />
+    <link rel="alternate" hreflang="tr" href="https://yasincan.dev" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="./img/intro-bg.webp" type="image/webp">
     <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./lib/font-awesome/css/all.min.css" />
-    <link rel="stylesheet" href="./lib/owl-carousel/owl.carousel.min.css" />
-    <link rel="stylesheet" href="./lib/magnific-popup.js/magnific-popup.min.css" />
     {{ $styles := resources.Get "css/site.css" | resources.Minify }}
     <link rel="stylesheet" href="{{ $styles.Permalink }}" media="screen" />
     <link rel="apple-touch-icon" href="./favicon.ico">
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "mainEntity": {
+            "@type": "Person",
+            "name": "Yasin Can",
+            "jobTitle": "Software Engineer",
+            "url": "https://yasincan.dev",
+            "image": "https://yasincan.dev/images/profile.jpg",
+            "email": "hello@yasincan.dev",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Istanbul",
+                "addressCountry": "TR"
+            },
+            "sameAs": [
+                "https://twitter.com/yasincancs",
+                "https://linkedin.com/in/yasincan",
+                "https://github.com/yasincan"
+            ],
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Lidio & Mobilexpress"
+            },
+            "knowsAbout": ["C#", ".NET Core", "ASP.NET", "Web API", "JavaScript", "Docker", "SQL", "HTML", "CSS"]
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Yasin Can - Software Developer",
+        "url": "https://yasincan.dev",
+        "description": "Yasin Can'ın yazılım geliştirme projeleri, profesyonel deneyimleri ve iletişim bilgileri.",
+        "inLanguage": "tr-TR"
+    }
+    </script>
 </head>
 
 <body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1" aria-label="Main content">
@@ -64,16 +106,6 @@
         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W6Q7K85J" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="lds-ellipsis">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <!-- Preloader End -->
     <!-- Document Wrapper
     =============================== -->
     <div id="main-wrapper">
@@ -86,11 +118,12 @@
 
                     <!-- Logo -->
                     <a href="/" class="mb-lg-auto mt-lg-4">
-                        <span class="bg-dark-2 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block">
+                        <span class="bg-dark-2 rounded-pill p-2 mb-lg-1 d-inline-block">
                             <picture>
                                 <source srcset="./images/profile.webp" type="image/webp">
                                 <img class="img-fluid rounded-pill d-block" src="./images/profile.jpg" width="200"
-                                     height="200" title="Yasin Can" alt="Yasin Can - Software Engineer">
+                                     height="200" title="Yasin Can" alt="Yasin Can - Software Engineer"
+                                     fetchpriority="high">
                             </picture>
                         </span>
                         <h1 class="text-5 text-white text-center mb-0 d-lg-block">Yasin Can</h1>
@@ -110,20 +143,17 @@
                     </div>
                     <ul class="social-icons social-icons-muted social-icons-sm mt-lg-auto ms-auto ms-lg-0 d-flex">
                         <li class="social-icons-twitter">
-                            <a data-bs-toggle="tooltip" title="Twitter"
-                               href="https://twitter.com/yasincancs" target="_blank">
+                            <a href="https://twitter.com/yasincancs" target="_blank" rel="noopener">
                                 <i class="fab fa-twitter dev-social"></i>
                             </a>
                         </li>
                         <li class="social-icons-linkedin">
-                            <a data-bs-toggle="tooltip" title="Linkedin"
-                               data-bs-placement="top" href="https://linkedin.com/in/yasincan" target="_blank">
+                            <a href="https://linkedin.com/in/yasincan" target="_blank" rel="noopener">
                                 <i class="fab fa-linkedin dev-social"></i>
                             </a>
                         </li>
                         <li class="social-icons-github">
-                            <a data-bs-toggle="tooltip" title="GitHub"
-                               data-bs-placement="top" href="https://github.com/yasincan" target="_blank">
+                            <a href="https://github.com/yasincan" target="_blank" rel="noopener">
                                 <i class="fab fa-github dev-social"></i>
                             </a>
                         </li>
@@ -143,7 +173,7 @@
 
             <!-- Intro
             ============================================= -->
-            <section id="home">
+            <section id="home" aria-label="Ana Sayfa">
                 <div class="hero-wrap">
                     <div class="hero-mask opacity-8 bg-dark"></div>
                     <div class="hero-bg parallax"></div>
@@ -182,7 +212,7 @@
             <!-- Intro end -->
             <!-- About
             ============================================= -->
-            <section id="about" class="section">
+            <section id="about" class="section" aria-label="Hakkımda">
                 <div class="container px-lg-5">
                     <!-- Heading -->
                     <div class="position-relative d-flex text-center mb-5">
@@ -250,7 +280,7 @@
             <!-- About end -->
             <!-- Resume
             ============================================= -->
-            <section id="resume" class="section">
+            <section id="resume" class="section" aria-label="Özgeçmiş">
                 <div class="container px-lg-5">
                     <!-- Heading -->
                     <div class="position-relative d-flex text-center mb-5">
@@ -400,7 +430,7 @@
             <!-- Resume end -->
             <!-- Contact Me
             ============================================= -->
-            <section id="contact" class="section bg-light">
+            <section id="contact" class="section bg-light" aria-label="İletişim">
                 <div class="container px-lg-5">
                     <!-- Heading -->
                     <div class="position-relative d-flex text-center mb-5">
@@ -506,19 +536,9 @@
 
     <script src="./lib/jquery/dist/jquery.min.js"></script>
     <script src="./lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./lib/jquery.easing/jquery.easing.min.js"></script>
-    <script src="./lib/jquery.appear/jquery.appear.min.js"></script>
-    <script src="./lib/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="./lib/jquery.countTo/jquery.countTo.min.js"></script>
-    <script src="./lib/parallaxie/parallaxie.min.js"></script>
     <script src="./lib/typed.js/typed.min.js"></script>
-    <script src="./lib/owl-carousel/owl.carousel.min.js"></script>
-    <script src="./lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="./lib/magnific-popup.js/jquery.magnific-popup.min.js"></script>
-    <script src="./lib/switchery/switchery.min.js"></script>
     {{ $theme := resources.Get "js/theme.js" | resources.Minify | fingerprint }}
     <script src="{{ $theme.Permalink }}" integrity="{{ $theme.Data.Integrity }}" crossorigin="anonymous"></script>
-    <script id="google-recaptcha-v3" src="https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM" async defer></script>
     <script src="./lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="./lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
@@ -551,6 +571,26 @@
             min: $.validator.format("Lütfen {0} değerine eşit ya da daha büyük bir değer giriniz."),
             require_from_group: $.validator.format("Lütfen bu alanların en az {0} tanesini doldurunuz.")
         });
+    </script>
+    <script>
+        // Lazy load reCAPTCHA when contact section is near viewport
+        (function() {
+            var recaptchaLoaded = false;
+            var observer = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting && !recaptchaLoaded) {
+                    recaptchaLoaded = true;
+                    var s = document.createElement('script');
+                    s.id = 'google-recaptcha-v3';
+                    s.src = 'https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
+                    s.async = true;
+                    s.defer = true;
+                    document.body.appendChild(s);
+                    observer.disconnect();
+                }
+            }, { rootMargin: '200px' });
+            var contactEl = document.getElementById('contact');
+            if (contactEl) observer.observe(contactEl);
+        })();
     </script>
 </body>
 
