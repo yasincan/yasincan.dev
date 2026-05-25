@@ -524,7 +524,12 @@
 </head>
 <body>
 
-{{ $puzzleImages := resources.Match "images/Puzzle/*" }}
+{{ $puzzleImages := slice }}
+{{ range readDir "assets/images/Puzzle" }}
+  {{ if not .IsDir }}
+    {{ $puzzleImages = $puzzleImages | append (printf "/images/puzzle/%s" .Name) }}
+  {{ end }}
+{{ end }}
 
 <div id="app">
   <div class="shell">
@@ -663,7 +668,7 @@
 
 <!-- image list injected by Hugo template -->
 <script>
-  var PUZZLE_IMAGES = [{{ range $i, $img := $puzzleImages }}{{ if $i }},{{ end }}"{{ $img.RelPermalink }}"{{ end }}];
+  var PUZZLE_IMAGES = [{{ range $i, $img := $puzzleImages }}{{ if $i }},{{ end }}"{{ $img }}"{{ end }}];
 </script>
 
 <script>
