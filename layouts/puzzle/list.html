@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow, noimageindex">
+  <meta name="theme-color" content="#070b14">
+  <meta name="color-scheme" content="dark">
+  <title>Puzzle Oyunu</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050816;
+      --bg2: #0b1020;
+      --panel: rgba(11,18,38,.74);
+      --border: rgba(148,163,184,.13);
+      --text: #e5eefc;
+      --muted: #8ca0c8;
+      --accent: #76e4f7;
+      --accent2: #8b5cf6;
+      --good: #31d0aa;
+      --danger: #f87171;
+      --shadow: 0 24px 80px rgba(0,0,0,.45);
+      --r-xl: 26px;
+      --r-lg: 20px;
+      --r-md: 14px;
+      --ctrl-h: 52px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* animated ambient glow */
+    body::before {
+      content: "";
+      position: fixed; inset: -30%; z-index: -2;
+      background:
+        radial-gradient(circle at 22% 28%, rgba(118,228,247,.17), transparent 22%),
+        radial-gradient(circle at 76% 16%, rgba(139,92,246,.18), transparent 20%),
+        radial-gradient(circle at 60% 82%, rgba(49,208,170,.13), transparent 20%);
+      filter: blur(64px);
+      animation: drift 20s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    /* subtle grid overlay */
+    body::after {
+      content: "";
+      position: fixed; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 68px 68px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,.6), transparent 85%);
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(-2%,-1%,0) scale(1); }
+      to   { transform: translate3d(2%, 1.4%,0) scale(1.07); }
+    }
+
+    /* ─── layout ─────────────────────────────────────────── */
+    #app {
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .shell {
+      width: min(100%, 1380px);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* glass card base */
+    .glass {
+      background: linear-gradient(180deg, rgba(18,28,56,.82), rgba(8,14,30,.78));
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ─── top row ─────────────────────────────────────────── */
+    .topbar {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    /* brand card */
+    .brand {
+      border-radius: var(--r-xl);
+      padding: 22px 24px;
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand::after {
+      content: "";
+      position: absolute;
+      right: -10%; bottom: -30%;
+      width: 220px; height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(118,228,247,.22), transparent 62%);
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-size: .76rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 3vw, 3.2rem);
+      line-height: .95;
+      letter-spacing: -.05em;
+      background: linear-gradient(135deg, #e5eefc 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.6;
+      max-width: 54ch;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.07);
+      color: var(--text);
+      font-size: .84rem;
+      white-space: nowrap;
+    }
+
+    /* controls card */
+    .controls {
+      border-radius: var(--r-xl);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .group-label {
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    /* segmented buttons */
+    .segmented {
+      display: flex;
+      padding: 5px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      gap: 4px;
+    }
+
+    .segmented button {
+      flex: 1 1 0;
+      min-height: var(--ctrl-h);
+      border: 1px solid transparent;
+      border-radius: 14px;
+      background: transparent;
+      color: var(--muted);
+      font: 700 .9rem/1 inherit;
+      cursor: pointer;
+      transition: all 160ms ease;
+    }
+
+    .segmented button.active {
+      color: #06101e;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 28px rgba(118,228,247,.22);
+    }
+
+    .segmented button:not(.active):hover { border-color: rgba(118,228,247,.2); color: var(--text); }
+
+    /* action buttons grid */
+    .action-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+
+    .action-btn, .sound-btn {
+      min-height: var(--ctrl-h);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font: 700 .88rem/1 inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .action-btn:hover, .sound-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(118,228,247,.26);
+      box-shadow: 0 8px 24px rgba(0,0,0,.22);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, rgba(49,208,170,.2), rgba(118,228,247,.15));
+      border-color: rgba(49,208,170,.28);
+    }
+
+    .image-label { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+
+    /* ─── stats bar ───────────────────────────────────────── */
+    .stats-card {
+      border-radius: var(--r-xl);
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 15px;
+      border-radius: var(--r-lg);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.065);
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .stat .label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+    .stat .value { font-size: clamp(1.15rem,1.8vw,1.55rem); font-weight: 800; letter-spacing: -.04em; }
+
+    .progress-shell { grid-column: 1/-1; display: flex; flex-direction: column; gap: 8px; }
+
+    .progress-track {
+      width: 100%; height: 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.055);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--good), var(--accent2));
+      transition: width 240ms ease;
+      box-shadow: 0 0 22px rgba(118,228,247,.28);
+    }
+
+    .status-text { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+
+    /* ─── board ───────────────────────────────────────────── */
+    .board-card {
+      border-radius: var(--r-xl);
+      padding: 14px;
+    }
+
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .board-meta { display: flex; flex-direction: column; gap: 4px; }
+    .board-meta strong { font-size: 1.02rem; }
+    .board-meta span { color: var(--muted); font-size: .88rem; }
+
+    .board-wrap { display: grid; place-items: center; }
+
+    #board {
+      position: relative;
+      width: min(100%, 900px);
+      aspect-ratio: 1/1;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(118,228,247,.1), transparent 28%),
+        linear-gradient(180deg, rgba(9,14,28,.95), rgba(3,8,20,.99));
+      border: 1px solid rgba(255,255,255,.075);
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 18px 55px rgba(0,0,0,.38);
+      isolation: isolate;
+    }
+
+    /* grid overlay on board */
+    #board::before {
+      content: "";
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: calc(100% / var(--grid,3)) calc(100% / var(--grid,3));
+      pointer-events: none;
+    }
+
+    /* ─── pieces ──────────────────────────────────────────── */
+    .piece {
+      position: absolute;
+      left: 0; top: 0;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+      border-radius: var(--r-md);
+      box-shadow: 0 10px 26px rgba(0,0,0,.25), 0 2px 6px rgba(0,0,0,.18);
+      transition: box-shadow 180ms ease, filter 180ms ease;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    .piece:not(.locked):not(.dragging):hover {
+      z-index: 10;
+      box-shadow: 0 18px 44px rgba(0,0,0,.35), 0 0 0 2px rgba(118,228,247,.28);
+      filter: brightness(1.05);
+    }
+
+    .piece.dragging {
+      z-index: 999;
+      cursor: grabbing;
+      box-shadow: 0 26px 60px rgba(0,0,0,.45), 0 0 0 2px rgba(118,228,247,.4);
+      filter: saturate(1.05) brightness(1.04);
+    }
+
+    .piece.locked {
+      cursor: default;
+      box-shadow: none;
+      transition: transform 180ms ease-in-out, box-shadow 180ms ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .piece canvas {
+      display: block;
+      border-radius: var(--r-md);
+      pointer-events: none;
+    }
+
+    /* locked highlight flash */
+    @keyframes lockFlash {
+      0%   { filter: brightness(1.5) saturate(1.4); }
+      100% { filter: brightness(1) saturate(1); }
+    }
+
+    .piece.lock-flash { animation: lockFlash 320ms ease forwards; }
+
+    /* ─── overlay mask (completion + feedback) ─────────────── */
+    .overlay-mask {
+      position: fixed; inset: 0; z-index: 30;
+      background: rgba(2,6,18,.62);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .overlay-mask.show { opacity: 1; pointer-events: auto; }
+
+    .modal {
+      position: fixed; inset: 0; z-index: 40;
+      display: grid; place-items: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 240ms ease;
+    }
+
+    .modal.show { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      width: min(100%, 500px);
+      border-radius: var(--r-xl);
+      padding: 24px;
+      text-align: center;
+      transform: translateY(22px) scale(.95);
+      transition: transform 260ms ease;
+    }
+
+    .modal.show .modal-card { transform: translateY(0) scale(1); }
+
+    .modal-hero {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 24px 70px rgba(0,0,0,.48);
+      animation: modalZoom 640ms cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes modalZoom {
+      from { transform: scale(.88); filter: blur(3px) saturate(.85); }
+      to   { transform: scale(1); filter: blur(0) saturate(1); }
+    }
+
+    .modal-card h2 {
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      letter-spacing: -.05em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #e5eefc, var(--good));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-card p { color: var(--muted); font-size: .94rem; line-height: 1.6; }
+
+    .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+
+    .best-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(49,208,170,.14);
+      border: 1px solid rgba(49,208,170,.28);
+      color: var(--good);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+
+    /* ─── feedback btn ────────────────────────────────────── */
+    .feedback-btn {
+      width: 100%;
+      min-height: var(--ctrl-h);
+      border: 1px solid rgba(139,92,246,.32);
+      border-radius: var(--r-md);
+      background: linear-gradient(135deg, rgba(139,92,246,.18), rgba(118,228,247,.1));
+      color: var(--text);
+      font: 700 .88rem/1 inherit;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+    .feedback-btn:hover { transform: translateY(-2px); border-color: rgba(139,92,246,.52); background: linear-gradient(135deg, rgba(139,92,246,.28), rgba(118,228,247,.16)); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+
+    /* ─── feedback form ───────────────────────────────────── */
+    .feedback-form { text-align: left; margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-label { font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .form-input, .form-textarea { width: 100%; padding: 13px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.05); color: var(--text); font: inherit; font-size: .95rem; outline: none; transition: border-color 160ms ease, box-shadow 160ms ease; }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(118,228,247,.4); box-shadow: 0 0 0 3px rgba(118,228,247,.1); }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,.25); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-error { font-size: .82rem; color: var(--danger); min-height: 1.2em; }
+    .form-notice { font-size: .8rem; color: var(--muted); line-height: 1.5; text-align: center; }
+    .feedback-result { padding: 13px 16px; border-radius: 14px; font-size: .9rem; line-height: 1.5; display: none; }
+    .feedback-result.success { display: block; background: rgba(49,208,170,.12); border: 1px solid rgba(49,208,170,.28); color: var(--good); }
+    .feedback-result.error { display: block; background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.28); color: var(--danger); }
+
+    /* ─── responsive ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .topbar { grid-template-columns: 1fr; }
+      .stats-card { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      #app { padding: 10px; gap: 10px; }
+      .action-row { grid-template-columns: 1fr 1fr; }
+      .action-row .sound-btn { grid-column: 1/-1; }
+      .modal-actions { grid-template-columns: 1fr; }
+      .brand { min-height: auto; }
+    }
+
+    @media (max-width: 400px) {
+      .action-row { grid-template-columns: 1fr; }
+      .stats-card { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+{{ $puzzleImages := resources.Match "images/Puzzle/*" }}
+
+<div id="app">
+  <div class="shell">
+
+    <!-- top row: brand + controls -->
+    <div class="topbar">
+
+      <div class="brand glass">
+        <div>
+          <div class="eyebrow">Puzzle Oyunu</div>
+          <h1>Görüntüyü<br>birleştir.</h1>
+          <p class="subtitle">Zorluk seviyesi seç, parçaları fare veya parmakla sürükle, doğru yere oturt. Tahta her ekran boyutuna otomatik uyum sağlar.</p>
+        </div>
+        <div class="badge-row">
+          <div class="badge">Fare ve dokunmatik sürükleme</div>
+          <div class="badge">Otomatik kilitleme</div>
+          <div class="badge">En iyi skor kaydedilir</div>
+        </div>
+      </div>
+
+      <div class="controls glass">
+        <div>
+          <div class="group-label">Zorluk Seviyesi</div>
+          <div class="segmented" id="difficulty-picker">
+            <button type="button" data-grid="3" class="active">Kolay&nbsp;<small>3×3</small></button>
+            <button type="button" data-grid="4">Orta&nbsp;<small>4×4</small></button>
+            <button type="button" data-grid="5">Zor&nbsp;<small>5×5</small></button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="action-btn primary" id="restart-btn" type="button">Yeniden Başla</button>
+          <button class="action-btn" id="next-image-btn" type="button">Sonraki Resim</button>
+          <button class="sound-btn" id="sound-btn" type="button">🔇 Ses</button>
+        </div>
+
+        <button class="feedback-btn" id="feedback-btn" type="button">💬 Geri Bildirim Gönder</button>
+
+        <div class="image-label" id="image-label">
+          Resim 1 / {{ len $puzzleImages }}
+        </div>
+      </div>
+    </div>
+
+    <!-- stats bar -->
+    <div class="stats-card glass">
+      <div class="stat">
+        <div class="label">İlerleme</div>
+        <div class="value" id="progress-text">%0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Parçalar</div>
+        <div class="value" id="pieces-text">0 / 0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Hamle</div>
+        <div class="value" id="moves-text">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">Süre</div>
+        <div class="value" id="timer-text">00:00</div>
+      </div>
+      <div class="stat" style="grid-column:1/-1; padding-bottom:10px;">
+        <div class="label">En İyi Skor <span id="best-label" style="color:var(--accent);font-size:.75rem;letter-spacing:.06em;"></span></div>
+        <div class="value" id="best-text">—</div>
+      </div>
+      <div class="progress-shell">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="status-text" id="status-text">Zorluk seviyesi seç ve çözmeye başla.</div>
+      </div>
+    </div>
+
+    <!-- board -->
+    <div class="board-card glass">
+      <div class="board-header">
+        <div class="board-meta">
+          <strong id="board-title">Bulmaca Tahtası</strong>
+          <span id="board-subtitle">0 parça yerleştirildi</span>
+        </div>
+        <div class="badge" id="board-grid-badge">3 × 3 ızgara · 9 parça</div>
+      </div>
+      <div class="board-wrap">
+        <div id="board" style="--grid:3"></div>
+      </div>
+    </div>
+
+  </div><!-- .shell -->
+</div><!-- #app -->
+
+<div class="overlay-mask" id="completion-mask"></div>
+<div class="modal" id="completion-modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+  <div class="modal-card glass">
+    <div class="modal-hero" id="modal-hero"></div>
+    <h2 id="modal-heading">Bulmaca Tamamlandı!</h2>
+    <p id="modal-copy">Harika iş!</p>
+    <div id="modal-best-badge"></div>
+    <div class="modal-actions">
+      <button class="action-btn primary" id="play-again-btn" type="button">Tekrar Oyna</button>
+      <button class="action-btn" id="modal-next-btn" type="button">Sonraki Resim</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay-mask" id="feedback-mask"></div>
+<div class="modal" id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-heading">
+  <div class="modal-card glass">
+    <h2 id="feedback-heading" style="background:linear-gradient(135deg,#e5eefc,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Geri Bildirim</h2>
+    <p style="margin-top:8px;">Oyunla ilgili düşüncelerini, önerilerini veya isteklerini buraya yazabilirsin.</p>
+    <form class="feedback-form" id="feedback-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="fb-name">Ad</label>
+        <input class="form-input" id="fb-name" name="Name" type="text" placeholder="Ad Soyad" autocomplete="name" required>
+        <div class="form-error" id="fb-name-err"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fb-email">E-posta</label>
+        <input class="form-input" id="fb-email" name="Email" type="email" placeholder="ornek@mail.com" autocomplete="email" required>
+        <div class="form-error" id="fb-email-err"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fb-message">Mesajın</label>
+        <textarea class="form-textarea" id="fb-message" name="Message" placeholder="Oyun hakkındaki düşüncelerini, önerilerini veya geliştirme isteklerini buraya yaz..." maxlength="1000" required></textarea>
+        <div class="form-error" id="fb-message-err"></div>
+      </div>
+      <div class="feedback-result" id="fb-result"></div>
+      <div class="modal-actions">
+        <button class="action-btn primary" id="fb-submit-btn" type="submit">Gönder</button>
+        <button class="action-btn" id="fb-close-btn" type="button">Kapat</button>
+      </div>
+      <p class="form-notice">Bu site reCAPTCHA ile korunmaktadır.</p>
+    </form>
+  </div>
+</div>
+
+<!-- image list injected by Hugo template -->
+<script>
+  var PUZZLE_IMAGES = [{{ range $i, $img := $puzzleImages }}{{ if $i }},{{ end }}"{{ $img.RelPermalink }}"{{ end }}];
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ─── helpers ─────────────────────────────────────────── */
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function fmt(s) { return pad(Math.floor(s / 60)) + ':' + pad(s % 60); }
+  function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+  function $id(id) { return document.getElementById(id); }
+
+  /* ─── DOM refs ────────────────────────────────────────── */
+  var board            = $id('board');
+  var progressText     = $id('progress-text');
+  var piecesText       = $id('pieces-text');
+  var movesText        = $id('moves-text');
+  var timerText        = $id('timer-text');
+  var bestText         = $id('best-text');
+  var bestLabel        = $id('best-label');
+  var statusText       = $id('status-text');
+  var imageLabel       = $id('image-label');
+  var boardTitle       = $id('board-title');
+  var boardSubtitle    = $id('board-subtitle');
+  var boardGridBadge   = $id('board-grid-badge');
+  var progressFill     = $id('progress-fill');
+  var completionMask   = $id('completion-mask');
+  var completionModal  = $id('completion-modal');
+  var modalHero        = $id('modal-hero');
+  var modalCopy        = $id('modal-copy');
+  var modalBestBadge   = $id('modal-best-badge');
+  var difficultyPicker = $id('difficulty-picker');
+  var restartBtn       = $id('restart-btn');
+  var nextImageBtn     = $id('next-image-btn');
+  var soundBtn         = $id('sound-btn');
+  var playAgainBtn     = $id('play-again-btn');
+  var modalNextBtn     = $id('modal-next-btn');
+  var feedbackBtn      = $id('feedback-btn');
+  var feedbackMask     = $id('feedback-mask');
+  var feedbackModal    = $id('feedback-modal');
+  var feedbackForm     = $id('feedback-form');
+  var fbSubmitBtn      = $id('fb-submit-btn');
+  var fbCloseBtn       = $id('fb-close-btn');
+  var fbResult         = $id('fb-result');
+
+  /* ─── game state ──────────────────────────────────────── */
+  var state = {
+    imageIndex:    0,
+    gridSize:      3,
+    boardPx:       0,
+    piecePx:       0,
+    pieces:        [],
+    currentImg:    null,
+    currentUrl:    '',
+    dragging:      null,
+    dragPid:       null,
+    dragOffX:      0,
+    dragOffY:      0,
+    moves:         0,
+    placed:        0,
+    timerId:       null,
+    startTime:     0,
+    elapsed:       0,
+    done:          false,
+    soundOn:       false,
+    resizeRaf:     0
+  };
+
+  if (!PUZZLE_IMAGES.length) {
+    statusText.textContent = 'assets/images/Puzzle/ klasöründe resim bulunamadı. Resim ekleyip yeniden derleyin.';
+    board.style.background = 'rgba(255,255,255,.04)';
+    board.innerHTML = '<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:.94rem;padding:24px;text-align:center;">Bulmaca resmi bulunamadı.<br><code>assets/images/Puzzle/</code> klasörüne görsel ekleyip Hugo\'yu yeniden derleyin.</div>';
+    return;
+  }
+
+  /* ─── best score storage ──────────────────────────────── */
+  function bsKey() { return 'yc:puzzle:' + state.gridSize + ':' + state.imageIndex; }
+
+  function loadBest() {
+    try {
+      var raw = localStorage.getItem(bsKey());
+      if (!raw) { bestText.textContent = '—'; bestLabel.textContent = ''; return null; }
+      var b = JSON.parse(raw);
+      bestText.textContent = fmt(b.t) + ' / ' + b.m + ' hamle';
+      bestLabel.textContent = '(bu yapılandırma)';
+      return b;
+    } catch (e) { return null; }
+  }
+
+  function saveBest(seconds, moves) {
+    try {
+      var cur = loadBest();
+      if (!cur || seconds < cur.t || (seconds === cur.t && moves < cur.m)) {
+        localStorage.setItem(bsKey(), JSON.stringify({ t: seconds, m: moves }));
+        bestText.textContent = fmt(seconds) + ' / ' + moves + ' hamle';
+        bestLabel.textContent = '(yeni rekor!)';
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  /* ─── timer ───────────────────────────────────────────── */
+  function stopTimer() {
+    if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+  }
+
+  function startTimer() {
+    stopTimer();
+    state.startTime = Date.now();
+    state.elapsed = 0;
+    timerText.textContent = '00:00';
+    state.timerId = setInterval(function () {
+      state.elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+      timerText.textContent = fmt(state.elapsed);
+    }, 1000);
+  }
+
+  /* ─── stats UI ────────────────────────────────────────── */
+  function updateStats() {
+    var total   = state.pieces.length || 1;
+    var percent = Math.round(state.placed / total * 100);
+    progressText.textContent = '%' + percent;
+    progressFill.style.width  = percent + '%';
+    movesText.textContent     = state.moves;
+    piecesText.textContent    = state.placed + ' / ' + total;
+    boardSubtitle.textContent = state.placed + ' / ' + total + ' parça yerleştirildi';
+  }
+
+  function setStatus(msg) { statusText.textContent = msg; }
+
+  function updateDiffButtons() {
+    difficultyPicker.querySelectorAll('button').forEach(function (btn) {
+      btn.classList.toggle('active', +btn.dataset.grid === state.gridSize);
+    });
+    var total = state.gridSize * state.gridSize;
+    boardGridBadge.textContent = state.gridSize + ' × ' + state.gridSize + ' ızgara · ' + total + ' parça';
+    board.style.setProperty('--grid', state.gridSize);
+  }
+
+  /* ─── board sizing ────────────────────────────────────── */
+  function calcBoardPx() {
+    var appPad   = 20;
+    var uiHeight = 360; /* approx top UI height */
+    var avW = window.innerWidth  - appPad * 2;
+    var avH = window.innerHeight - uiHeight;
+    var side = clamp(Math.min(avW, avH), 220, 900);
+    return side;
+  }
+
+  function resizeBoard() {
+    var px = calcBoardPx();
+    board.style.width  = px + 'px';
+    board.style.height = px + 'px';
+    state.boardPx = px;
+    state.piecePx = px / state.gridSize;
+  }
+
+  /* ─── piece canvas ────────────────────────────────────── */
+  function drawPieceCanvas(canvas, img, row, col) {
+    var sz   = Math.min(img.naturalWidth, img.naturalHeight);
+    var srcX = Math.floor((img.naturalWidth  - sz) / 2);
+    var srcY = Math.floor((img.naturalHeight - sz) / 2);
+    var slice = sz / state.gridSize;
+    canvas.width  = Math.ceil(state.piecePx);
+    canvas.height = Math.ceil(state.piecePx);
+    var ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled  = true;
+    ctx.imageSmoothingQuality  = 'high';
+    ctx.drawImage(img,
+      srcX + col * slice, srcY + row * slice, slice, slice,
+      0, 0, canvas.width, canvas.height
+    );
+  }
+
+  /* ─── transform helper ────────────────────────────────── */
+  function applyTransform(piece, animated) {
+    var el = piece.el;
+    el.style.width  = state.piecePx + 'px';
+    el.style.height = state.piecePx + 'px';
+    if (animated) {
+      el.style.transition = 'transform 180ms ease-in-out';
+    } else {
+      el.style.transition = 'none';
+    }
+    el.style.transform = 'translate3d(' + piece.x + 'px,' + piece.y + 'px,0)';
+  }
+
+  /* ─── build pieces ────────────────────────────────────── */
+  function buildPieces(img) {
+    stopTimer();
+    stopDrag();
+    board.innerHTML = '';
+    state.pieces  = [];
+    state.placed  = 0;
+    state.moves   = 0;
+    state.elapsed = 0;
+    state.done    = false;
+    hideCompletionModal();
+
+    var total = state.gridSize * state.gridSize;
+    var limit = state.boardPx - state.piecePx;
+
+    /* create all pieces */
+    for (var r = 0; r < state.gridSize; r++) {
+      for (var c = 0; c < state.gridSize; c++) {
+        var el = document.createElement('div');
+        el.className = 'piece';
+        el.style.width  = state.piecePx + 'px';
+        el.style.height = state.piecePx + 'px';
+
+        var cnv = document.createElement('canvas');
+        drawPieceCanvas(cnv, img, r, c);
+        cnv.style.width  = state.piecePx + 'px';
+        cnv.style.height = state.piecePx + 'px';
+        el.appendChild(cnv);
+
+        var piece = {
+          id: r * state.gridSize + c,
+          row: r, col: c,
+          tx: c * state.piecePx,   /* target x */
+          ty: r * state.piecePx,   /* target y */
+          x:  0, y: 0,
+          locked: false,
+          el: el, canvas: cnv
+        };
+
+        /* random scatter - avoid neat grid layout */
+        var rand = Math.random;
+        piece.x = clamp(rand() * limit + (rand() - .5) * state.piecePx * .3, 0, limit);
+        piece.y = clamp(rand() * limit + (rand() - .5) * state.piecePx * .3, 0, limit);
+
+        applyTransform(piece, false);
+
+        el.addEventListener('pointerdown', onPointerDown);
+        board.appendChild(el);
+        state.pieces.push(piece);
+      }
+    }
+
+    /* shuffle DOM order so pieces overlap differently each time */
+    var shuffled = state.pieces.slice().sort(function () { return Math.random() - .5; });
+    shuffled.forEach(function (p) { board.appendChild(p.el); });
+
+    imageLabel.textContent = 'Resim ' + (state.imageIndex + 1) + ' / ' + PUZZLE_IMAGES.length;
+    updateStats();
+    loadBest();
+    updateDiffButtons();
+    setStatus('Her parçayı uygun yuvaya sürükleyin. Yaklaştığında otomatik kilitlenir.');
+    startTimer();
+  }
+
+  /* ─── load image & start ──────────────────────────────── */
+  function loadGame(keepIndex) {
+    if (!keepIndex) {
+      /* pick a different random image */
+      if (PUZZLE_IMAGES.length > 1) {
+        var next = state.imageIndex;
+        while (next === state.imageIndex) { next = Math.floor(Math.random() * PUZZLE_IMAGES.length); }
+        state.imageIndex = next;
+      }
+    }
+    state.currentUrl = PUZZLE_IMAGES[state.imageIndex];
+    imageLabel.textContent = 'Resim yükleniyor…';
+    var img = new Image();
+    img.decoding = 'async';
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      state.currentImg = img;
+      resizeBoard();
+      buildPieces(img);
+    };
+    img.onerror = function () {
+      setStatus('Resim yüklenemedi: ' + state.currentUrl);
+    };
+    img.src = state.currentUrl;
+  }
+
+  /* ─── drag & drop (Pointer Events API) ───────────────── */
+  function stopDrag() {
+    if (state.dragging) {
+      state.dragging.el.classList.remove('dragging');
+      state.dragging = null;
+    }
+    state.dragPid = null;
+  }
+
+  function onPointerDown(e) {
+    if (state.done) return;
+    var el    = e.currentTarget;
+    var piece = state.pieces.find(function (p) { return p.el === el; });
+    if (!piece || piece.locked) return;
+
+    e.preventDefault();
+    el.setPointerCapture(e.pointerId);
+
+    state.dragging = piece;
+    state.dragPid  = e.pointerId;
+    /* offset = cursor relative to piece top-left corner */
+    var rect   = board.getBoundingClientRect();
+    state.dragOffX = e.clientX - rect.left - piece.x;
+    state.dragOffY = e.clientY - rect.top  - piece.y;
+
+    el.classList.add('dragging');
+    el.style.zIndex = '999';
+  }
+
+  function onPointerMove(e) {
+    if (!state.dragging || state.dragPid !== e.pointerId) return;
+    e.preventDefault();
+
+    var rect  = board.getBoundingClientRect();
+    var limit = state.boardPx - state.piecePx;
+    var nx = clamp(e.clientX - rect.left - state.dragOffX, 0, limit);
+    var ny = clamp(e.clientY - rect.top  - state.dragOffY, 0, limit);
+
+    state.dragging.x = nx;
+    state.dragging.y = ny;
+    applyTransform(state.dragging, false);
+  }
+
+  function onPointerUp(e) {
+    if (!state.dragging || state.dragPid !== e.pointerId) return;
+    var piece = state.dragging;
+    try { piece.el.releasePointerCapture(e.pointerId); } catch (_) {}
+
+    state.dragging = null;
+    state.dragPid  = null;
+    state.moves++;
+
+    /* snap check */
+    var dx   = piece.x - piece.tx;
+    var dy   = piece.y - piece.ty;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var threshold = Math.max(20, state.piecePx * 0.22);
+
+    if (dist <= threshold) {
+      piece.locked = true;
+      piece.x = piece.tx;
+      piece.y = piece.ty;
+      piece.el.style.zIndex = '2';
+      piece.el.classList.remove('dragging');
+      piece.el.classList.add('locked');
+      piece.el.classList.add('lock-flash');
+      setTimeout(function () { piece.el.classList.remove('lock-flash'); }, 340);
+      applyTransform(piece, true);
+
+      state.placed++;
+      playSnap();
+      setStatus('Kilitlendi! ' + (state.pieces.length - state.placed) + ' parça kaldı.');
+      updateStats();
+      checkCompletion();
+    } else {
+      piece.el.classList.remove('dragging');
+      piece.el.style.zIndex = '';
+      applyTransform(piece, true);
+      updateStats();
+    }
+  }
+
+  function onPointerCancel(e) {
+    if (!state.dragging || state.dragPid !== e.pointerId) return;
+    var piece = state.dragging;
+    try { piece.el.releasePointerCapture(e.pointerId); } catch (_) {}
+    piece.el.classList.remove('dragging');
+    piece.el.style.zIndex = '';
+    applyTransform(piece, true);
+    state.dragging = null;
+    state.dragPid  = null;
+  }
+
+  /* ─── sound (Web Audio, no autoplay) ─────────────────── */
+  function playSnap() {
+    if (!state.soundOn) return;
+    try {
+      var AC  = window.AudioContext || window.webkitAudioContext;
+      var ctx = new AC();
+      var osc = ctx.createOscillator();
+      var g   = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      g.gain.value = 0.0001;
+      osc.connect(g);
+      g.connect(ctx.destination);
+      osc.start();
+      g.gain.exponentialRampToValueAtTime(0.07, ctx.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+      osc.stop(ctx.currentTime + 0.12);
+    } catch (_) {}
+  }
+
+  /* ─── completion ──────────────────────────────────────── */
+  function checkCompletion() {
+    if (state.placed < state.pieces.length) return;
+    state.done = true;
+    stopTimer();
+    var isNew = saveBest(state.elapsed, state.moves);
+
+    modalHero.style.backgroundImage = 'url("' + state.currentUrl + '")';
+    modalCopy.textContent = fmt(state.elapsed) + ' sürede ' + state.moves + ' hamleyle tamamlandı.';
+    modalBestBadge.innerHTML = isNew
+      ? '<div class="best-badge">🏆 Yeni rekor!</div>'
+      : '<div class="best-badge">En iyi: ' + bestText.textContent + '</div>';
+
+    completionMask.classList.add('show');
+    completionModal.classList.add('show');
+    setStatus('Bulmaca tamamlandı! Tekrar başla veya sonraki resmi dene.');
+  }
+
+  function hideCompletionModal() {
+    completionMask.classList.remove('show');
+    completionModal.classList.remove('show');
+  }
+
+  /* ─── resize handling ─────────────────────────────────── */
+  function onResize() {
+    if (state.resizeRaf) return;
+    state.resizeRaf = requestAnimationFrame(function () {
+      state.resizeRaf = 0;
+      if (!state.currentImg) return;
+
+      var prev = state.boardPx;
+      resizeBoard();
+      var scale = state.boardPx / (prev || 1);
+
+      /* rescale all piece positions */
+      state.pieces.forEach(function (piece) {
+        var limit = state.boardPx - state.piecePx;
+        if (piece.locked) {
+          piece.tx = piece.col * state.piecePx;
+          piece.ty = piece.row * state.piecePx;
+          piece.x  = piece.tx;
+          piece.y  = piece.ty;
+        } else {
+          piece.x = clamp(piece.x * scale, 0, limit);
+          piece.y = clamp(piece.y * scale, 0, limit);
+          piece.tx = piece.col * state.piecePx;
+          piece.ty = piece.row * state.piecePx;
+        }
+        /* redraw canvas at new size */
+        drawPieceCanvas(piece.canvas, state.currentImg, piece.row, piece.col);
+        piece.canvas.style.width  = state.piecePx + 'px';
+        piece.canvas.style.height = state.piecePx + 'px';
+        applyTransform(piece, false);
+      });
+    });
+  }
+
+  /* ─── event wiring ────────────────────────────────────── */
+  board.addEventListener('pointermove',   onPointerMove,   { passive: false });
+  board.addEventListener('pointerup',     onPointerUp);
+  board.addEventListener('pointercancel', onPointerCancel);
+
+  difficultyPicker.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-grid]');
+    if (!btn) return;
+    var g = +btn.dataset.grid;
+    if (g === state.gridSize) return;
+    state.gridSize = g;
+    loadGame(true);
+  });
+
+  restartBtn.addEventListener('click',    function () { loadGame(false); });
+  nextImageBtn.addEventListener('click',  function () {
+    state.imageIndex = (state.imageIndex + 1) % PUZZLE_IMAGES.length;
+    loadGame(true);
+  });
+  playAgainBtn.addEventListener('click',  function () { hideCompletionModal(); loadGame(false); });
+  modalNextBtn.addEventListener('click',  function () {
+    hideCompletionModal();
+    state.imageIndex = (state.imageIndex + 1) % PUZZLE_IMAGES.length;
+    loadGame(true);
+  });
+
+  soundBtn.addEventListener('click', function () {
+    state.soundOn = !state.soundOn;
+    soundBtn.textContent = state.soundOn ? '🔊 Ses' : '🔇 Ses';
+    soundBtn.setAttribute('aria-pressed', state.soundOn);
+  });
+
+  window.addEventListener('resize',            onResize, { passive: true });
+  window.addEventListener('orientationchange', onResize, { passive: true });
+
+  document.addEventListener('visibilitychange', function () {
+    if (!state.done) {
+      if (document.hidden) { stopTimer(); }
+      else if (!state.timerId) {
+        state.startTime = Date.now() - state.elapsed * 1000;
+        state.timerId = setInterval(function () {
+          state.elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+          timerText.textContent = fmt(state.elapsed);
+        }, 1000);
+      }
+    }
+  });
+
+  fetch('https://ap.yasincan.dev/Network/Age', {
+    headers: { 'X-Page-Referrer': document.referrer || '' },
+    cache: 'no-store'
+  }).catch(function () { return null; });
+
+  /* ─── geri bildirim formu ─────────────────────────────── */
+  var rcLoaded = false, RC_KEY = '6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
+
+  function loadRecaptcha(cb) {
+    if (rcLoaded && window.grecaptcha) { cb(); return; }
+    if (document.getElementById('grc-script')) {
+      var poll = setInterval(function () {
+        if (window.grecaptcha && window.grecaptcha.ready) { clearInterval(poll); rcLoaded = true; cb(); }
+      }, 100);
+      return;
+    }
+    var s = document.createElement('script');
+    s.id = 'grc-script';
+    s.src = 'https://www.google.com/recaptcha/api.js?render=' + RC_KEY;
+    s.async = true;
+    s.onload = function () { rcLoaded = true; window.grecaptcha.ready(cb); };
+    document.body.appendChild(s);
+  }
+
+  function showFeedbackModal() {
+    feedbackMask.classList.add('show');
+    feedbackModal.classList.add('show');
+    fbResult.className = 'feedback-result';
+    fbResult.textContent = '';
+    loadRecaptcha(function () {});
+  }
+
+  function hideFeedbackModal() {
+    feedbackMask.classList.remove('show');
+    feedbackModal.classList.remove('show');
+  }
+
+  function validateFeedback() {
+    var ok = true;
+    var name  = document.getElementById('fb-name').value.trim();
+    var mail  = document.getElementById('fb-email').value.trim();
+    var msg   = document.getElementById('fb-message').value.trim();
+    document.getElementById('fb-name-err').textContent    = '';
+    document.getElementById('fb-email-err').textContent   = '';
+    document.getElementById('fb-message-err').textContent = '';
+    if (!name) { document.getElementById('fb-name-err').textContent = 'Ad alan\u0131 zorunludur.'; ok = false; }
+    if (!mail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { document.getElementById('fb-email-err').textContent = 'Ge\u00e7erli bir e-posta adresi giriniz.'; ok = false; }
+    if (!msg)  { document.getElementById('fb-message-err').textContent = 'Mesaj alan\u0131 zorunludur.'; ok = false; }
+    return ok;
+  }
+
+  feedbackForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validateFeedback()) return;
+    fbSubmitBtn.disabled = true;
+    fbSubmitBtn.textContent = 'G\u00f6nderiliyor\u2026';
+    fbResult.className = 'feedback-result';
+    fbResult.textContent = '';
+
+    function send(token) {
+      fetch('https://ap.yasincan.dev/Network/Contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          Name:    document.getElementById('fb-name').value.trim(),
+          Email:   document.getElementById('fb-email').value.trim(),
+          Message: '[Bulmaca Oyunu Geri Bildirimi]\n' + document.getElementById('fb-message').value.trim(),
+          'g-recaptcha-response': token || ''
+        })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        fbSubmitBtn.disabled = false;
+        fbSubmitBtn.textContent = 'G\u00f6nder';
+        if (data.response === 'success') {
+          fbResult.className = 'feedback-result success';
+          fbResult.textContent = 'Geri bildiriminiz iletildi, te\u015fekk\u00fcrler!';
+          feedbackForm.reset();
+        } else {
+          fbResult.className = 'feedback-result error';
+          fbResult.textContent = 'Bir hata olu\u015ftu. L\u00fctfen tekrar deneyin.';
+        }
+      })
+      .catch(function () {
+        fbSubmitBtn.disabled = false;
+        fbSubmitBtn.textContent = 'G\u00f6nder';
+        fbResult.className = 'feedback-result error';
+        fbResult.textContent = 'Ba\u011flant\u0131 hatas\u0131. L\u00fctfen tekrar deneyin.';
+      });
+    }
+
+    if (window.grecaptcha && rcLoaded) {
+      window.grecaptcha.ready(function () {
+        window.grecaptcha.execute(RC_KEY, { action: 'puzzle_feedback' })
+          .then(send)
+          .catch(function () { send(''); });
+      });
+    } else {
+      send('');
+    }
+  });
+
+  feedbackBtn.addEventListener('click', showFeedbackModal);
+  fbCloseBtn.addEventListener('click',  hideFeedbackModal);
+  feedbackMask.addEventListener('click', hideFeedbackModal);
+
+  /* ─── boot ────────────────────────────────────────────── */
+  loadGame(true);
+
+})();
+</script>
+</body>
+</html>
