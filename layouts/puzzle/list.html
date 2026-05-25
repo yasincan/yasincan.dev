@@ -525,7 +525,7 @@
 <body>
 
 {{ $puzzleImages := slice }}
-{{ range readDir "assets/images/Puzzle" }}
+{{ range readDir "static/images/puzzle" }}
   {{ if not .IsDir }}
     {{ $puzzleImages = $puzzleImages | append (printf "/images/puzzle/%s" .Name) }}
   {{ end }}
