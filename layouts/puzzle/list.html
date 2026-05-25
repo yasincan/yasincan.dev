@@ -1165,10 +1165,7 @@
     }
   });
 
-  fetch('https://ap.yasincan.dev/Network/Age', {
-    headers: { 'X-Page-Referrer': document.referrer || '' },
-    cache: 'no-store'
-  }).catch(function () { return null; });
+  fetch('https://ap.yasincan.dev/Network/Age').catch(function () { return null; });
 
   /* ─── geri bildirim formu ─────────────────────────────── */
   var rcLoaded = false, RC_KEY = '6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
