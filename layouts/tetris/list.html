@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050816">
+<meta name="color-scheme" content="dark">
+<title>Blok Bulmaca | Yasin Can</title>
+<meta name="description" content="Blokları sürükleyip tahtaya yerleştir, satır ve sütunları tamamlayarak temizle. Mobil ve masaüstü uyumlu blok bulmaca oyunu.">
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:title" content="Blok Bulmaca | Yasin Can">
+<meta property="og:description" content="Blokları sürükleyip tahtaya yerleştir, satır ve sütunları tamamlayarak temizle.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yasincan.dev/tetris/">
+<meta property="og:image" content="https://yasincan.dev/images/tetris/tetris-og.png">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1351">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Blok Bulmaca - Blokları sürükleyip tahtaya yerleştir">
+<meta property="og:site_name" content="yasincan.dev">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yasincancs">
+<meta name="twitter:url" content="https://yasincan.dev/tetris/">
+<meta name="twitter:title" content="Blok Bulmaca | Yasin Can">
+<meta name="twitter:description" content="Blokları sürükleyip tahtaya yerleştir, satır ve sütunları tamamlayarak temizle.">
+<meta name="twitter:image" content="https://yasincan.dev/images/tetris/tetris-og.png">
+<meta name="twitter:image:alt" content="Blok Bulmaca - Blokları sürükleyip tahtaya yerleştir">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Blok Bulmaca","description":"Blokları sürükleyip tahtaya yerleştir, satır ve sütunları tamamlayarak temizle.","image":"https://yasincan.dev/images/tetris-og.png","inLanguage":"tr","url":"https://yasincan.dev/tetris/","applicationCategory":"Game","operatingSystem":"All","author":{"@type":"Person","name":"Yasin Can","url":"https://yasincan.dev"}}</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050816;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);--text:#e2e8f0;--muted:#94a3b8;--accent:#76e4f7;--accent2:#8b5cf6;--good:#31d0aa;--danger:#f87171;--warn:#e8d44d;--radius:16px;--glow:0 0 30px rgba(118,228,247,.08)}
+html,body{width:100%;height:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.5;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(118,228,247,.06),transparent 70%),radial-gradient(ellipse 60% 50% at 80% 110%,rgba(139,92,246,.05),transparent 60%);pointer-events:none;z-index:0}
+.glass{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--glow)}
+#app{position:relative;z-index:1;min-height:100vh;display:flex;justify-content:center;padding:24px 16px 40px}
+.shell{width:100%;max-width:520px;display:flex;flex-direction:column;gap:16px}
+.topbar{display:grid;grid-template-columns:1fr;gap:12px}
+.brand{padding:24px}
+.eyebrow{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:4px}
+.brand h1{font-size:1.55rem;font-weight:700;line-height:1.15;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.badge{font-size:.65rem;padding:3px 10px;border-radius:999px;background:rgba(118,228,247,.08);color:var(--accent);border:1px solid rgba(118,228,247,.12);white-space:nowrap}
+.controls{padding:16px;display:flex;flex-direction:column;gap:10px}
+.action-row{display:flex;gap:8px}
+.action-btn{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:.82rem;cursor:pointer;transition:all .2s}
+.action-btn:hover{background:rgba(255,255,255,.08)}
+.action-btn.primary{background:linear-gradient(135deg,rgba(118,228,247,.12),rgba(139,92,246,.12));border-color:rgba(118,228,247,.2)}
+.sound-btn{padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:.82rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.sound-btn:hover{background:rgba(255,255,255,.08)}
+.feedback-btn{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--muted);font-size:.78rem;cursor:pointer;transition:all .2s;text-align:center}
+.feedback-btn:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.stats-card{padding:14px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px 12px}
+.stat{text-align:center}
+.stat .label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.stat .value{font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.progress-shell{grid-column:1/-1;margin-top:4px}
+.progress-track{height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--good),var(--accent2));width:100%;transition:width .4s}
+.status-text{font-size:.65rem;color:var(--muted);margin-top:5px;text-align:center}
+.board-card{padding:16px;display:flex;flex-direction:column;gap:10px}
+.board-header{display:flex;justify-content:space-between;align-items:center}
+.board-meta{display:flex;flex-direction:column}
+.board-meta strong{font-size:.82rem}
+.board-meta span{font-size:.65rem;color:var(--muted)}
+.board-wrap{position:relative;width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+.board-wrap canvas{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px}
+.tray-card{padding:16px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.tray-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.tray-slots{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;width:100%}
+.tray-slot{display:flex;align-items:center;justify-content:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);cursor:grab;transition:opacity .25s,transform .25s,box-shadow .25s;touch-action:none;min-width:70px;min-height:70px;flex:1;max-width:150px}
+.tray-slot:active{cursor:grabbing}
+.tray-slot.placed{opacity:.2;pointer-events:none;transform:scale(.9)}
+.tray-slot.dragging-source{opacity:0;transform:scale(.8)}
+.tray-slot:hover:not(.placed):not(.dragging-source){background:rgba(255,255,255,.06);box-shadow:0 0 16px rgba(118,228,247,.1)}
+.tray-slot canvas{display:block;pointer-events:none}
+#drag-ghost{position:fixed;pointer-events:none;z-index:9999;display:none;opacity:.85;filter:drop-shadow(0 4px 20px rgba(118,228,247,.25))}
+.modal-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(5,8,22,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px}
+.modal-overlay.active{display:flex}
+.modal{width:100%;max-width:380px;border-radius:var(--radius);background:rgba(15,20,40,.92);border:1px solid var(--border);padding:28px 24px;text-align:center;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+.modal h2{font-size:1.3rem;margin-bottom:4px}
+.modal p{font-size:.85rem;color:var(--muted);margin-bottom:18px}
+.modal .final-score{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0}
+.modal .final-lines{font-size:.85rem;color:var(--muted);margin-bottom:20px}
+.modal-btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;transition:opacity .2s;margin-top:8px}
+.modal-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#050816}
+.modal-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.modal-btn:hover{opacity:.85}
+.fb-group{text-align:left;margin-bottom:12px}
+.fb-group label{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px}
+.fb-group input,.fb-group textarea,.fb-group select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:.85rem;font-family:inherit;resize:vertical}
+.fb-group textarea{min-height:80px}
+.fb-group input:focus,.fb-group textarea:focus,.fb-group select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(118,228,247,.15)}
+.fb-msg{font-size:.78rem;margin-top:10px;padding:8px 12px;border-radius:8px;display:none}
+.fb-msg.ok{display:block;background:rgba(49,208,170,.1);color:var(--good);border:1px solid rgba(49,208,170,.2)}
+.fb-msg.err{display:block;background:rgba(248,113,113,.1);color:var(--danger);border:1px solid rgba(248,113,113,.2)}
+.flash-overlay{position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:0;background:rgba(118,228,247,.15);transition:opacity .15s}
+.flash-overlay.active{opacity:1}
+@media(min-width:640px){.topbar{grid-template-columns:1.4fr 1fr}.stats-card{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:520px){.shell{gap:12px}.brand{padding:18px}.controls{padding:12px}.board-card{padding:12px}.tray-card{padding:12px}.stats-card{padding:10px 14px;grid-template-columns:repeat(2,1fr)}}
+@media(max-width:380px){.brand h1{font-size:1.3rem}.subtitle{font-size:.72rem}.tray-slot{min-width:55px;min-height:55px;padding:6px}.badge-row{gap:4px}.badge{font-size:.6rem;padding:2px 8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}.flash-overlay{transition:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="shell">
+
+<div class="topbar">
+<div class="brand glass">
+<div>
+<div class="eyebrow">Blok Bulmaca</div>
+<h1>Blokları<br>yerleştir.</h1>
+<p class="subtitle">Blokları tepsiden tahtaya sürükle, satır ve sütunları tamamlayarak temizle.</p>
+</div>
+<div class="badge-row">
+<span class="badge">Sürükle & bırak</span>
+<span class="badge">Satır & sütun temizle</span>
+<span class="badge">En iyi skor kaydı</span>
+</div>
+</div>
+<div class="controls glass">
+<div class="action-row">
+<button class="action-btn primary" id="restart-btn">↻ Yeniden Başla</button>
+<button class="sound-btn" id="sound-btn">🔇 Ses</button>
+</div>
+<button class="feedback-btn" id="feedback-btn">💬 Geri Bildirim Gönder</button>
+</div>
+</div>
+
+<div class="stats-card glass">
+<div class="stat"><div class="label">Skor</div><div class="value" id="score-val">0</div></div>
+<div class="stat"><div class="label">Satırlar</div><div class="value" id="lines-val">0</div></div>
+<div class="stat"><div class="label">Seri</div><div class="value" id="streak-val">0</div></div>
+<div class="stat"><div class="label">Süre</div><div class="value" id="timer-val">00:00</div></div>
+<div class="stat" style="grid-column:1/-1;padding-bottom:6px">
+<div class="label">En İyi Skor <span id="best-label"></span></div>
+<div class="value" id="best-val">—</div>
+</div>
+<div class="progress-shell">
+<div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+<div class="status-text" id="status-text">Blokları tepsiden tahtaya sürükle.</div>
+</div>
+</div>
+
+<div class="board-card glass">
+<div class="board-header">
+<div class="board-meta"><strong>Oyun Tahtası</strong><span>10 × 10 ızgara</span></div>
+<div class="badge" id="board-badge">Seri: 0</div>
+</div>
+<div class="board-wrap">
+<canvas id="game-canvas"></canvas>
+<div class="flash-overlay" id="flash-overlay"></div>
+</div>
+</div>
+
+<div class="tray-card glass">
+<div class="tray-label">Blokları buradan sürükle</div>
+<div class="tray-slots" id="tray-slots"></div>
+</div>
+
+</div>
+</div>
+
+<canvas id="drag-ghost"></canvas>
+
+<div class="modal-overlay" id="gameover-modal">
+<div class="modal">
+<h2>Oyun Bitti!</h2>
+<p>Hiçbir blok tahtaya sığmıyor.</p>
+<div class="final-score" id="final-score">0</div>
+<div class="final-lines"><span id="final-lines">0</span> satır temizledin</div>
+<button class="modal-btn primary" id="play-again-btn">↻ Tekrar Oyna</button>
+</div>
+</div>
+
+<div class="modal-overlay" id="feedback-modal">
+<div class="modal" style="text-align:left">
+<h2 style="text-align:center">💬 Geri Bildirim</h2>
+<p style="text-align:center">Düşüncelerini paylaş</p>
+<form id="feedback-form" autocomplete="off">
+<div class="fb-group">
+<label>Adın</label>
+<input type="text" id="fb-name" maxlength="50" placeholder="İsteğe bağlı">
+</div>
+<div class="fb-group">
+<label>Konu</label>
+<select id="fb-topic"><option value="general">Genel</option><option value="bug">Hata Bildirimi</option><option value="suggestion">Öneri</option><option value="other">Diğer</option></select>
+</div>
+<div class="fb-group">
+<label>Mesajın *</label>
+<textarea id="fb-message" required maxlength="500" placeholder="Oyun hakkında ne düşünüyorsun?"></textarea>
+</div>
+<button type="submit" class="modal-btn primary" id="fb-submit">Gönder</button>
+<button type="button" class="modal-btn ghost" id="fb-cancel">İptal</button>
+<div class="fb-msg" id="fb-msg"></div>
+</form>
+</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+var GRID = 10;
+var LS_KEY = 'yc:tetris:highscore';
+
+var ALL_SHAPES = [
+  [[1]],
+  [[1,1]],
+  [[1],[1]],
+  [[1,1,1]],
+  [[1],[1],[1]],
+  [[1,1,1,1]],
+  [[1],[1],[1],[1]],
+  [[1,1,1,1,1]],
+  [[1],[1],[1],[1],[1]],
+  [[1,1],[1,1]],
+  [[1,1,1],[1,1,1],[1,1,1]],
+  [[1,1],[1,0]],
+  [[1,1],[0,1]],
+  [[1,0],[1,1]],
+  [[0,1],[1,1]],
+  [[1,0,0],[1,0,0],[1,1,1]],
+  [[0,0,1],[0,0,1],[1,1,1]],
+  [[1,1,1],[0,0,1],[0,0,1]],
+  [[1,1,1],[1,0,0],[1,0,0]],
+  [[1,1,1],[1,0,0]],
+  [[1,1,1],[0,0,1]],
+  [[1,0,0],[1,1,1]],
+  [[0,0,1],[1,1,1]],
+  [[1,1,1],[0,1,0]],
+  [[0,1,0],[1,1,1]],
+  [[1,0],[1,1],[1,0]],
+  [[0,1],[1,1],[0,1]],
+  [[0,1,1],[1,1,0]],
+  [[1,1,0],[0,1,1]],
+  [[1,0],[1,1],[0,1]],
+  [[0,1],[1,1],[1,0]],
+  [[0,1,0],[1,1,1],[0,1,0]]
+];
+
+var PALETTE = ['#00d4f0','#e8d44d','#a855f7','#34d399','#f87171','#3b82f6','#fb923c','#ec4899','#14b8a6'];
+
+var canvas = document.getElementById('game-canvas');
+var ctx = canvas.getContext('2d');
+var dragGhost = document.getElementById('drag-ghost');
+var dgCtx = dragGhost.getContext('2d');
+var trayEl = document.getElementById('tray-slots');
+var flashEl = document.getElementById('flash-overlay');
+
+var scoreEl = document.getElementById('score-val');
+var linesEl = document.getElementById('lines-val');
+var streakEl = document.getElementById('streak-val');
+var timerEl = document.getElementById('timer-val');
+var bestEl = document.getElementById('best-val');
+var bestLabel = document.getElementById('best-label');
+var progressFill = document.getElementById('progress-fill');
+var statusText = document.getElementById('status-text');
+var boardBadge = document.getElementById('board-badge');
+
+var gameoverModal = document.getElementById('gameover-modal');
+var finalScoreEl = document.getElementById('final-score');
+var finalLinesEl = document.getElementById('final-lines');
+
+var feedbackModal = document.getElementById('feedback-modal');
+var fbForm = document.getElementById('feedback-form');
+var fbMsg = document.getElementById('fb-msg');
+
+var CELL = 40;
+var TRAY_CELL = 24;
+
+var audioCtx = null;
+
+var state = {
+  board: [],
+  tray: [],
+  score: 0,
+  lines: 0,
+  streak: 0,
+  gameOver: false,
+  soundOn: false,
+  dragging: null,
+  ghostRow: -1,
+  ghostCol: -1,
+  ghostValid: false,
+  timerId: null,
+  startTime: 0,
+  elapsed: 0,
+  drawRequested: false
+};
+
+function emptyBoard() {
+  var b = [];
+  for (var r = 0; r < GRID; r++) {
+    b[r] = [];
+    for (var c = 0; c < GRID; c++) b[r][c] = null;
+  }
+  return b;
+}
+
+function countCells(shape) {
+  var n = 0;
+  for (var r = 0; r < shape.length; r++)
+    for (var c = 0; c < shape[0].length; c++)
+      if (shape[r][c]) n++;
+  return n;
+}
+
+function canPlaceAt(shape, row, col) {
+  var rows = shape.length, cols = shape[0].length;
+  if (row < 0 || col < 0 || row + rows > GRID || col + cols > GRID) return false;
+  for (var r = 0; r < rows; r++)
+    for (var c = 0; c < cols; c++)
+      if (shape[r][c] && state.board[row + r][col + c]) return false;
+  return true;
+}
+
+function canPlaceAnywhere(shape) {
+  var rows = shape.length, cols = shape[0].length;
+  for (var r = 0; r <= GRID - rows; r++)
+    for (var c = 0; c <= GRID - cols; c++)
+      if (canPlaceAt(shape, r, c)) return true;
+  return false;
+}
+
+function placeBlock(shape, color, row, col) {
+  for (var r = 0; r < shape.length; r++)
+    for (var c = 0; c < shape[0].length; c++)
+      if (shape[r][c]) state.board[row + r][col + c] = color;
+}
+
+function clearLines() {
+  var rowsToClear = [];
+  var colsToClear = [];
+  var r, c, full;
+  for (r = 0; r < GRID; r++) {
+    full = true;
+    for (c = 0; c < GRID; c++) { if (!state.board[r][c]) { full = false; break; } }
+    if (full) rowsToClear.push(r);
+  }
+  for (c = 0; c < GRID; c++) {
+    full = true;
+    for (r = 0; r < GRID; r++) { if (!state.board[r][c]) { full = false; break; } }
+    if (full) colsToClear.push(c);
+  }
+  for (var i = 0; i < rowsToClear.length; i++)
+    for (c = 0; c < GRID; c++) state.board[rowsToClear[i]][c] = null;
+  for (var j = 0; j < colsToClear.length; j++)
+    for (r = 0; r < GRID; r++) state.board[r][colsToClear[j]] = null;
+  return rowsToClear.length + colsToClear.length;
+}
+
+function checkGameOver() {
+  for (var i = 0; i < state.tray.length; i++) {
+    if (state.tray[i].placed) continue;
+    if (canPlaceAnywhere(state.tray[i].shape)) return false;
+  }
+  return true;
+}
+
+function randomShape() {
+  return ALL_SHAPES[Math.floor(Math.random() * ALL_SHAPES.length)];
+}
+
+function randomColor() {
+  return PALETTE[Math.floor(Math.random() * PALETTE.length)];
+}
+
+function generateTray() {
+  state.tray = [];
+  for (var i = 0; i < 3; i++) {
+    state.tray.push({ shape: randomShape(), color: randomColor(), placed: false });
+  }
+}
+
+function calcCellSize() {
+  var wrap = document.querySelector('.board-wrap');
+  if (!wrap) return 40;
+  var w = wrap.clientWidth;
+  return Math.floor(w / GRID);
+}
+
+function resizeCanvas() {
+  CELL = calcCellSize();
+  TRAY_CELL = Math.max(16, Math.floor(CELL * 0.55));
+  var size = CELL * GRID;
+  canvas.width = size;
+  canvas.height = size;
+  renderTray();
+  requestDraw();
+}
+
+function drawCellAt(context, x, y, size, color, alpha) {
+  var a = alpha !== undefined ? alpha : 1;
+  var gap = Math.max(1, Math.floor(size * 0.06));
+  var ix = x + gap, iy = y + gap;
+  var is = size - gap * 2;
+  context.globalAlpha = a;
+  context.fillStyle = color;
+  context.fillRect(ix, iy, is, is);
+  context.fillStyle = 'rgba(255,255,255,0.18)';
+  context.fillRect(ix, iy, is, Math.max(1, Math.floor(is * 0.12)));
+  context.fillRect(ix, iy, Math.max(1, Math.floor(is * 0.12)), is);
+  context.fillStyle = 'rgba(0,0,0,0.22)';
+  context.fillRect(ix, iy + is - Math.max(1, Math.floor(is * 0.12)), is, Math.max(1, Math.floor(is * 0.12)));
+  context.fillRect(ix + is - Math.max(1, Math.floor(is * 0.12)), iy, Math.max(1, Math.floor(is * 0.12)), is);
+  context.globalAlpha = 1;
+}
+
+function drawBoard() {
+  var size = CELL * GRID;
+  ctx.clearRect(0, 0, size, size);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.012)';
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (var i = 0; i <= GRID; i++) {
+    var p = i * CELL;
+    ctx.beginPath(); ctx.moveTo(p, 0); ctx.lineTo(p, size); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, p); ctx.lineTo(size, p); ctx.stroke();
+  }
+
+  for (var r = 0; r < GRID; r++)
+    for (var c = 0; c < GRID; c++)
+      if (state.board[r][c])
+        drawCellAt(ctx, c * CELL, r * CELL, CELL, state.board[r][c]);
+
+  if (state.dragging && state.ghostRow >= 0 && state.ghostCol >= 0) {
+    var block = state.tray[state.dragging.index];
+    var shape = block.shape;
+    var color = state.ghostValid ? block.color : '#f87171';
+    var alpha = state.ghostValid ? 0.35 : 0.2;
+    for (var r2 = 0; r2 < shape.length; r2++)
+      for (var c2 = 0; c2 < shape[0].length; c2++)
+        if (shape[r2][c2]) {
+          var gr = state.ghostRow + r2, gc = state.ghostCol + c2;
+          if (gr >= 0 && gr < GRID && gc >= 0 && gc < GRID)
+            drawCellAt(ctx, gc * CELL, gr * CELL, CELL, color, alpha);
+        }
+  }
+
+  state.drawRequested = false;
+}
+
+function requestDraw() {
+  if (!state.drawRequested) {
+    state.drawRequested = true;
+    requestAnimationFrame(drawBoard);
+  }
+}
+
+function renderTray() {
+  trayEl.innerHTML = '';
+  for (var i = 0; i < state.tray.length; i++) {
+    var block = state.tray[i];
+    var slot = document.createElement('div');
+    slot.className = 'tray-slot' + (block.placed ? ' placed' : '');
+    slot.setAttribute('data-index', i);
+
+    var rows = block.shape.length, cols = block.shape[0].length;
+    var tc = document.createElement('canvas');
+    tc.width = cols * TRAY_CELL;
+    tc.height = rows * TRAY_CELL;
+    tc.style.width = tc.width + 'px';
+    tc.style.height = tc.height + 'px';
+
+    var tctx = tc.getContext('2d');
+    for (var r = 0; r < rows; r++)
+      for (var c = 0; c < cols; c++)
+        if (block.shape[r][c])
+          drawCellAt(tctx, c * TRAY_CELL, r * TRAY_CELL, TRAY_CELL, block.color);
+
+    slot.appendChild(tc);
+
+    if (!block.placed) {
+      slot.addEventListener('pointerdown', onTrayPointerDown);
+    }
+
+    trayEl.appendChild(slot);
+  }
+}
+
+function showDragGhostCanvas(block) {
+  var shape = block.shape;
+  var rows = shape.length, cols = shape[0].length;
+  dragGhost.width = cols * CELL;
+  dragGhost.height = rows * CELL;
+  dragGhost.style.width = dragGhost.width + 'px';
+  dragGhost.style.height = dragGhost.height + 'px';
+
+  dgCtx.clearRect(0, 0, dragGhost.width, dragGhost.height);
+  for (var r = 0; r < rows; r++)
+    for (var c = 0; c < cols; c++)
+      if (shape[r][c])
+        drawCellAt(dgCtx, c * CELL, r * CELL, CELL, block.color, 0.85);
+
+  dragGhost.style.display = 'block';
+}
+
+function onTrayPointerDown(e) {
+  if (state.gameOver) return;
+  e.preventDefault();
+
+  var slot = e.currentTarget;
+  var idx = parseInt(slot.getAttribute('data-index'), 10);
+  var block = state.tray[idx];
+  if (block.placed) return;
+
+  var yOff = (e.pointerType === 'touch') ? -80 : -10;
+
+  state.dragging = { index: idx, yOffset: yOff };
+
+  slot.classList.add('dragging-source');
+  slot.releasePointerCapture(e.pointerId);
+
+  showDragGhostCanvas(block);
+
+  var bw = block.shape[0].length * CELL;
+  var bh = block.shape.length * CELL;
+  dragGhost.style.left = (e.clientX - bw / 2) + 'px';
+  dragGhost.style.top = (e.clientY - bh / 2 + yOff) + 'px';
+}
+
+function onPointerMove(e) {
+  if (!state.dragging) return;
+  e.preventDefault();
+
+  var block = state.tray[state.dragging.index];
+  var shape = block.shape;
+  var bw = shape[0].length * CELL;
+  var bh = shape.length * CELL;
+  var yOff = state.dragging.yOffset;
+
+  var gx = e.clientX - bw / 2;
+  var gy = e.clientY - bh / 2 + yOff;
+
+  dragGhost.style.left = gx + 'px';
+  dragGhost.style.top = gy + 'px';
+
+  var rect = canvas.getBoundingClientRect();
+  var cellPx = rect.width / GRID;
+
+  var relX = (e.clientX - bw / 2 + yOff * 0) - rect.left;
+  var relY = (e.clientY - bh / 2 + yOff) - rect.top;
+
+  var col = Math.round(relX / cellPx);
+  var row = Math.round(relY / cellPx);
+
+  state.ghostCol = col;
+  state.ghostRow = row;
+  state.ghostValid = canPlaceAt(shape, row, col);
+
+  requestDraw();
+}
+
+function finishDrag() {
+  dragGhost.style.display = 'none';
+  state.dragging = null;
+  state.ghostRow = -1;
+  state.ghostCol = -1;
+  state.ghostValid = false;
+  renderTray();
+  requestDraw();
+}
+
+function onPointerUp(e) {
+  if (!state.dragging) return;
+
+  var idx = state.dragging.index;
+  var block = state.tray[idx];
+
+  if (state.ghostValid && state.ghostRow >= 0) {
+    placeBlock(block.shape, block.color, state.ghostRow, state.ghostCol);
+    block.placed = true;
+
+    var cellCount = countCells(block.shape);
+    state.score += cellCount;
+
+    var cleared = clearLines();
+
+    if (cleared > 0) {
+      state.streak++;
+      var lineBonus = Math.floor(cleared * (cleared + 1) / 2) * 10;
+      state.score += lineBonus * Math.max(1, state.streak);
+      state.lines += cleared;
+      flashBoard();
+      if (cleared >= 3) playSound('combo');
+      else playSound('clear');
+    } else {
+      state.streak = 0;
+      playSound('place');
+    }
+
+    var allPlaced = state.tray.every(function(b) { return b.placed; });
+    if (allPlaced) generateTray();
+
+    if (checkGameOver()) {
+      onGameOver();
+    }
+
+    updateStats();
+  }
+
+  finishDrag();
+}
+
+function onPointerCancel() {
+  if (!state.dragging) return;
+  finishDrag();
+}
+
+function flashBoard() {
+  flashEl.classList.add('active');
+  setTimeout(function() { flashEl.classList.remove('active'); }, 200);
+}
+
+function loadBest() {
+  try { return parseInt(localStorage.getItem(LS_KEY), 10) || 0; }
+  catch (e) { return 0; }
+}
+
+function saveBest(score) {
+  try { localStorage.setItem(LS_KEY, score); } catch (e) {}
+}
+
+function updateStats() {
+  scoreEl.textContent = state.score;
+  linesEl.textContent = state.lines;
+  streakEl.textContent = state.streak;
+  boardBadge.textContent = 'Seri: ' + state.streak;
+
+  var best = loadBest();
+  if (state.score > best) {
+    best = state.score;
+    saveBest(best);
+    bestLabel.textContent = '🎉';
+  } else {
+    bestLabel.textContent = '';
+  }
+  bestEl.textContent = best > 0 ? best : '—';
+
+  var filled = 0;
+  for (var r = 0; r < GRID; r++)
+    for (var c = 0; c < GRID; c++)
+      if (state.board[r][c]) filled++;
+  var pct = Math.round((1 - filled / (GRID * GRID)) * 100);
+  progressFill.style.width = pct + '%';
+
+  if (pct > 70) statusText.textContent = 'Harika gidiyorsun!';
+  else if (pct > 40) statusText.textContent = 'Dikkatli yerleştir.';
+  else if (pct > 20) statusText.textContent = 'Tahta doluyor!';
+  else statusText.textContent = 'Tehlikeli bölge!';
+}
+
+function formatTime(ms) {
+  var s = Math.floor(ms / 1000);
+  var m = Math.floor(s / 60);
+  s = s % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function startTimer() {
+  stopTimer();
+  state.startTime = Date.now() - state.elapsed;
+  state.timerId = setInterval(function() {
+    state.elapsed = Date.now() - state.startTime;
+    timerEl.textContent = formatTime(state.elapsed);
+  }, 1000);
+}
+
+function stopTimer() {
+  if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+}
+
+function onGameOver() {
+  state.gameOver = true;
+  stopTimer();
+  playSound('gameover');
+  var best = loadBest();
+  if (state.score > best) saveBest(state.score);
+  finalScoreEl.textContent = state.score;
+  finalLinesEl.textContent = state.lines;
+  gameoverModal.classList.add('active');
+}
+
+function startGame() {
+  state.board = emptyBoard();
+  state.score = 0;
+  state.lines = 0;
+  state.streak = 0;
+  state.gameOver = false;
+  state.elapsed = 0;
+  state.dragging = null;
+  state.ghostRow = -1;
+  state.ghostCol = -1;
+  state.ghostValid = false;
+  dragGhost.style.display = 'none';
+  gameoverModal.classList.remove('active');
+  generateTray();
+  resizeCanvas();
+  updateStats();
+  startTimer();
+  timerEl.textContent = '00:00';
+}
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
+
+function playSound(type) {
+  if (!state.soundOn) return;
+  try {
+    var ac = getAudioCtx();
+    var osc = ac.createOscillator();
+    var gain = ac.createGain();
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    gain.gain.value = 0.12;
+    var now = ac.currentTime;
+
+    switch (type) {
+      case 'place':
+        osc.type = 'sine'; osc.frequency.value = 440;
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+        break;
+      case 'clear':
+        osc.type = 'square'; osc.frequency.value = 660;
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.start(now); osc.stop(now + 0.2);
+        break;
+      case 'combo':
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.3);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.start(now); osc.stop(now + 0.35);
+        break;
+      case 'gameover':
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+        osc.start(now); osc.stop(now + 0.7);
+        break;
+    }
+  } catch (e) {}
+}
+
+document.getElementById('restart-btn').addEventListener('click', function() { startGame(); });
+
+document.getElementById('play-again-btn').addEventListener('click', function() { startGame(); });
+
+var soundBtn = document.getElementById('sound-btn');
+soundBtn.addEventListener('click', function() {
+  state.soundOn = !state.soundOn;
+  soundBtn.textContent = state.soundOn ? '🔊 Ses' : '🔇 Ses';
+  if (state.soundOn) getAudioCtx();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'm' || e.key === 'M') {
+    state.soundOn = !state.soundOn;
+    soundBtn.textContent = state.soundOn ? '🔊 Ses' : '🔇 Ses';
+    if (state.soundOn) getAudioCtx();
+  }
+});
+
+document.addEventListener('pointermove', onPointerMove, { passive: false });
+document.addEventListener('pointerup', onPointerUp);
+document.addEventListener('pointercancel', onPointerCancel);
+
+document.addEventListener('touchmove', function(e) {
+  if (state.dragging) e.preventDefault();
+}, { passive: false });
+
+window.addEventListener('resize', function() { resizeCanvas(); });
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    stopTimer();
+  } else if (!state.gameOver && state.score > 0) {
+    startTimer();
+  }
+});
+
+document.getElementById('feedback-btn').addEventListener('click', function() {
+  feedbackModal.classList.add('active');
+  fbMsg.className = 'fb-msg';
+  fbMsg.textContent = '';
+});
+
+document.getElementById('fb-cancel').addEventListener('click', function() {
+  feedbackModal.classList.remove('active');
+});
+
+feedbackModal.addEventListener('click', function(e) {
+  if (e.target === feedbackModal) feedbackModal.classList.remove('active');
+});
+
+gameoverModal.addEventListener('click', function(e) {
+  if (e.target === gameoverModal) gameoverModal.classList.remove('active');
+});
+
+var recaptchaLoaded = false;
+function loadRecaptcha(cb) {
+  if (recaptchaLoaded) { cb(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
+  s.onload = function() { recaptchaLoaded = true; cb(); };
+  document.head.appendChild(s);
+}
+
+fbForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var name = document.getElementById('fb-name').value.trim();
+  var topic = document.getElementById('fb-topic').value;
+  var message = document.getElementById('fb-message').value.trim();
+  if (!message) return;
+
+  var submitBtn = document.getElementById('fb-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Gönderiliyor...';
+
+  loadRecaptcha(function() {
+    grecaptcha.ready(function() {
+      grecaptcha.execute('6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM', { action: 'tetris_feedback' }).then(function(token) {
+        var body = '[Tetris Oyunu Geri Bildirimi]\n'
+          + 'Ad: ' + (name || 'Anonim') + '\n'
+          + 'Konu: ' + topic + '\n'
+          + 'Skor: ' + state.score + '\n'
+          + 'Satırlar: ' + state.lines + '\n\n'
+          + message;
+
+        fetch('https://ap.yasincan.dev/Network/Contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ Message: body, RecaptchaToken: token })
+        }).then(function(res) {
+          if (res.ok) {
+            fbMsg.className = 'fb-msg ok';
+            fbMsg.textContent = 'Geri bildirim gönderildi. Teşekkürler!';
+            fbForm.reset();
+          } else {
+            fbMsg.className = 'fb-msg err';
+            fbMsg.textContent = 'Gönderilemedi. Lütfen tekrar dene.';
+          }
+        }).catch(function() {
+          fbMsg.className = 'fb-msg err';
+          fbMsg.textContent = 'Bağlantı hatası. Lütfen tekrar dene.';
+        }).finally(function() {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Gönder';
+        });
+      });
+    });
+  });
+});
+
+  fetch('https://ap.yasincan.dev/Network/Age', {
+    headers: { 'X-Page-Referrer': document.referrer || '' },
+    cache: 'no-store'
+  }).catch(function () { return null; });
+
+startGame();
+
+})();
+</script>
+</body>
+</html>
