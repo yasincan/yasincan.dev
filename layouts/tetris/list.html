@@ -811,12 +811,43 @@ gameoverModal.addEventListener('click', function(e) {
 });
 
 var recaptchaLoaded = false;
-function loadRecaptcha(cb) {
+function loadRecaptcha(cb, errCb) {
   if (recaptchaLoaded) { cb(); return; }
   var s = document.createElement('script');
   s.src = 'https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
   s.onload = function() { recaptchaLoaded = true; cb(); };
+  s.onerror = function() { errCb(); };
   document.head.appendChild(s);
+}
+
+function sendFeedback(name, body, token, submitBtn) {
+  fetch('https://ap.yasincan.dev/Network/Contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      Name: name || 'Anonim',
+      Email: '',
+      Message: body,
+      'g-recaptcha-response': token || ''
+    })
+  }).then(function(r) { return r.json(); })
+  .then(function(data) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Gönder';
+    if (data.response === 'success') {
+      fbMsg.className = 'fb-msg ok';
+      fbMsg.textContent = 'Geri bildirim gönderildi. Teşekkürler!';
+      fbForm.reset();
+    } else {
+      fbMsg.className = 'fb-msg err';
+      fbMsg.textContent = 'Gönderilemedi. Lütfen tekrar dene.';
+    }
+  }).catch(function() {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Gönder';
+    fbMsg.className = 'fb-msg err';
+    fbMsg.textContent = 'Bağlantı hatası. Lütfen tekrar dene.';
+  });
 }
 
 fbForm.addEventListener('submit', function(e) {
@@ -830,38 +861,23 @@ fbForm.addEventListener('submit', function(e) {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Gönderiliyor...';
 
+  var body = '[Tetris Oyunu Geri Bildirimi]\n'
+    + 'Ad: ' + (name || 'Anonim') + '\n'
+    + 'Konu: ' + topic + '\n'
+    + 'Skor: ' + state.score + '\n'
+    + 'Satırlar: ' + state.lines + '\n\n'
+    + message;
+
   loadRecaptcha(function() {
     grecaptcha.ready(function() {
       grecaptcha.execute('6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM', { action: 'tetris_feedback' }).then(function(token) {
-        var body = '[Tetris Oyunu Geri Bildirimi]\n'
-          + 'Ad: ' + (name || 'Anonim') + '\n'
-          + 'Konu: ' + topic + '\n'
-          + 'Skor: ' + state.score + '\n'
-          + 'Satırlar: ' + state.lines + '\n\n'
-          + message;
-
-        fetch('https://ap.yasincan.dev/Network/Contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ Message: body, RecaptchaToken: token })
-        }).then(function(res) {
-          if (res.ok) {
-            fbMsg.className = 'fb-msg ok';
-            fbMsg.textContent = 'Geri bildirim gönderildi. Teşekkürler!';
-            fbForm.reset();
-          } else {
-            fbMsg.className = 'fb-msg err';
-            fbMsg.textContent = 'Gönderilemedi. Lütfen tekrar dene.';
-          }
-        }).catch(function() {
-          fbMsg.className = 'fb-msg err';
-          fbMsg.textContent = 'Bağlantı hatası. Lütfen tekrar dene.';
-        }).finally(function() {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Gönder';
-        });
+        sendFeedback(name, body, token, submitBtn);
+      }).catch(function() {
+        sendFeedback(name, body, '', submitBtn);
       });
     });
+  }, function() {
+    sendFeedback(name, body, '', submitBtn);
   });
 });
 
