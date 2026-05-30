@@ -792,10 +792,30 @@ document.addEventListener('visibilitychange', function() {
   }
 });
 
+var recaptchaLoaded = false;
+var RC_KEY = '6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
+
+function loadRecaptcha(cb) {
+  if (recaptchaLoaded && window.grecaptcha) { cb(); return; }
+  if (document.getElementById('grc-script')) {
+    var poll = setInterval(function () {
+      if (window.grecaptcha && window.grecaptcha.ready) { clearInterval(poll); recaptchaLoaded = true; cb(); }
+    }, 100);
+    return;
+  }
+  var s = document.createElement('script');
+  s.id = 'grc-script';
+  s.src = 'https://www.google.com/recaptcha/api.js?render=' + RC_KEY;
+  s.async = true;
+  s.onload = function () { recaptchaLoaded = true; window.grecaptcha.ready(cb); };
+  document.body.appendChild(s);
+}
+
 document.getElementById('feedback-btn').addEventListener('click', function() {
   feedbackModal.classList.add('active');
   fbMsg.className = 'fb-msg';
   fbMsg.textContent = '';
+  loadRecaptcha(function () {});
 });
 
 document.getElementById('fb-cancel').addEventListener('click', function() {
@@ -810,46 +830,6 @@ gameoverModal.addEventListener('click', function(e) {
   if (e.target === gameoverModal) gameoverModal.classList.remove('active');
 });
 
-var recaptchaLoaded = false;
-function loadRecaptcha(cb, errCb) {
-  if (recaptchaLoaded) { cb(); return; }
-  var s = document.createElement('script');
-  s.src = 'https://www.google.com/recaptcha/api.js?render=6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';
-  s.onload = function() { recaptchaLoaded = true; cb(); };
-  s.onerror = function() { errCb(); };
-  document.head.appendChild(s);
-}
-
-function sendFeedback(name, body, token, submitBtn) {
-  fetch('https://ap.yasincan.dev/Network/Contact', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      Name: name || 'Anonim',
-      Email: '',
-      Message: body,
-      'g-recaptcha-response': token || ''
-    })
-  }).then(function(r) { return r.json(); })
-  .then(function(data) {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Gönder';
-    if (data.response === 'success') {
-      fbMsg.className = 'fb-msg ok';
-      fbMsg.textContent = 'Geri bildirim gönderildi. Teşekkürler!';
-      fbForm.reset();
-    } else {
-      fbMsg.className = 'fb-msg err';
-      fbMsg.textContent = 'Gönderilemedi. Lütfen tekrar dene.';
-    }
-  }).catch(function() {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Gönder';
-    fbMsg.className = 'fb-msg err';
-    fbMsg.textContent = 'Bağlantı hatası. Lütfen tekrar dene.';
-  });
-}
-
 fbForm.addEventListener('submit', function(e) {
   e.preventDefault();
   var name = document.getElementById('fb-name').value.trim();
@@ -860,25 +840,56 @@ fbForm.addEventListener('submit', function(e) {
   var submitBtn = document.getElementById('fb-submit');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Gönderiliyor...';
+  fbMsg.className = 'fb-msg';
+  fbMsg.textContent = '';
 
-  var body = '[Tetris Oyunu Geri Bildirimi]\n'
-    + 'Ad: ' + (name || 'Anonim') + '\n'
+  var body = '[Blok Bulmaca Geri Bildirimi]\n'
     + 'Konu: ' + topic + '\n'
     + 'Skor: ' + state.score + '\n'
     + 'Satırlar: ' + state.lines + '\n\n'
     + message;
 
-  loadRecaptcha(function() {
-    grecaptcha.ready(function() {
-      grecaptcha.execute('6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM', { action: 'tetris_feedback' }).then(function(token) {
-        sendFeedback(name, body, token, submitBtn);
-      }).catch(function() {
-        sendFeedback(name, body, '', submitBtn);
-      });
+  function send(token) {
+    fetch('https://ap.yasincan.dev/Network/Contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        Name: name || 'Anonim',
+        Email: '',
+        Message: body,
+        'g-recaptcha-response': token || ''
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Gönder';
+      if (data.response === 'success') {
+        fbMsg.className = 'fb-msg ok';
+        fbMsg.textContent = 'Geri bildirim gönderildi. Teşekkürler!';
+        fbForm.reset();
+      } else {
+        fbMsg.className = 'fb-msg err';
+        fbMsg.textContent = 'Gönderilemedi. Lütfen tekrar dene.';
+      }
+    })
+    .catch(function() {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Gönder';
+      fbMsg.className = 'fb-msg err';
+      fbMsg.textContent = 'Bağlantı hatası. Lütfen tekrar dene.';
     });
-  }, function() {
-    sendFeedback(name, body, '', submitBtn);
-  });
+  }
+
+  if (window.grecaptcha && recaptchaLoaded) {
+    window.grecaptcha.ready(function() {
+      window.grecaptcha.execute(RC_KEY, { action: 'tetris_feedback' })
+        .then(send)
+        .catch(function() { send(''); });
+    });
+  } else {
+    send('');
+  }
 });
 
   fetch('https://ap.yasincan.dev/Network/Age', {
