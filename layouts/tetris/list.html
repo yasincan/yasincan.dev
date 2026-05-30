@@ -186,8 +186,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <input type="text" id="fb-name" maxlength="50" placeholder="İsteğe bağlı">
 </div>
 <div class="fb-group">
-<label>Konu</label>
-<select id="fb-topic"><option value="general">Genel</option><option value="bug">Hata Bildirimi</option><option value="suggestion">Öneri</option><option value="other">Diğer</option></select>
+<label>E-posta *</label>
+<input type="email" id="fb-email" maxlength="100" required placeholder="ornek@mail.com">
 </div>
 <div class="fb-group">
 <label>Mesajın *</label>
@@ -833,8 +833,13 @@ gameoverModal.addEventListener('click', function(e) {
 fbForm.addEventListener('submit', function(e) {
   e.preventDefault();
   var name = document.getElementById('fb-name').value.trim();
-  var topic = document.getElementById('fb-topic').value;
+  var email = document.getElementById('fb-email').value.trim();
   var message = document.getElementById('fb-message').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fbMsg.className = 'fb-msg err';
+    fbMsg.textContent = 'Geçerli bir e-posta adresi giriniz.';
+    return;
+  }
   if (!message) return;
 
   var submitBtn = document.getElementById('fb-submit');
@@ -844,7 +849,6 @@ fbForm.addEventListener('submit', function(e) {
   fbMsg.textContent = '';
 
   var body = '[Blok Bulmaca Geri Bildirimi]\n'
-    + 'Konu: ' + topic + '\n'
     + 'Skor: ' + state.score + '\n'
     + 'Satırlar: ' + state.lines + '\n\n'
     + message;
@@ -855,7 +859,7 @@ fbForm.addEventListener('submit', function(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         Name: name || 'Anonim',
-        Email: '',
+        Email: email,
         Message: body,
         'g-recaptcha-response': token || ''
       })
