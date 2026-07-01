@@ -122,10 +122,11 @@
         return false;
     });
 
+    (window._rcAsync ? window._rcAsync() : Promise.resolve(window._rc ? window._rc() : '')).then(function (rc) {
     $.ajax({
     url: "https://ap.yasincan.dev/Network/Age",
     headers: {
-        'X-Page-Referrer': document.referrer || ''
+        'X-Rc': rc
     },
     success: function (result) {
         $("#yc-year").html(result.year);
@@ -139,6 +140,7 @@
         $("#yc-yearsExperience").html("7");
     }
 });
+    });
 
     /*------------------------
        Contact Form

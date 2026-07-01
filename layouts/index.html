@@ -536,6 +536,7 @@
     <script src="./lib/jquery/dist/jquery.min.js"></script>
     <script src="./lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./lib/typed.js/typed.min.js"></script>
+    {{ partial "rc.html" . }}
     {{ $theme := resources.Get "js/theme.js" | resources.Minify | fingerprint }}
     <script src="{{ $theme.Permalink }}" integrity="{{ $theme.Data.Integrity }}" crossorigin="anonymous"></script>
     <script src="./lib/jquery-validation/dist/jquery.validate.min.js"></script>

@@ -566,6 +566,7 @@
   </style>
 </head>
 <body>
+{{ partial "rc.html" . }}
 
 {{ $puzzleImages := slice }}
 {{ range readDir "static/images/puzzle" }}
@@ -1208,10 +1209,7 @@
     }
   });
 
-  fetch('https://ap.yasincan.dev/Network/Age', {
-    headers: { 'X-Page-Referrer': document.referrer || '' },
-    cache: 'no-store'
-  }).catch(function () { return null; });
+  if (window._rcHit) window._rcHit();
 
   /* ─── geri bildirim formu ─────────────────────────────── */
   var rcLoaded = false, RC_KEY = '6Lc63NwgAAAAAA4n19eLz2orYGzIUJFw-7Uy_dWM';

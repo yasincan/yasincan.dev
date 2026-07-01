@@ -2,6 +2,7 @@
 .env.build
 node_modules
 public
+worker.js
 
 *.swp
 *.*~
